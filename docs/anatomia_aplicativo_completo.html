@@ -1,0 +1,429 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.root{padding:0 0 2rem}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;padding-bottom:12px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.tab{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:var(--color-background-primary);transition:all .15s}
+.tab.on{color:#fff;border-color:transparent}
+.tab.on.c1{background:#C4622D}.tab.on.c2{background:#2D5016}.tab.on.c3{background:#185FA5}.tab.on.c4{background:#534AB7}.tab.on.c5{background:#854F0B}.tab.on.c6{background:#A32D2D}.tab.on.c7{background:#0F6E56}
+.panel{display:none}.panel.on{display:block}
+.layer-stack{display:flex;flex-direction:column;gap:10px}
+.layer{border-radius:12px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.layer-header{padding:10px 16px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.layer-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
+.layer-title{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1}
+.layer-desc{font-size:11px;color:var(--color-text-secondary)}
+.layer-body{padding:12px 16px;border-top:0.5px solid var(--color-border-tertiary);display:none}
+.layer-body.open{display:block}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:8px}
+.comp{background:var(--color-background-secondary);border-radius:8px;padding:10px 12px}
+.comp-name{font-size:11px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.comp-desc{font-size:10px;color:var(--color-text-secondary);line-height:1.4}
+.comp-ex{font-size:10px;margin-top:4px;padding-top:4px;border-top:0.5px solid var(--color-border-tertiary);color:var(--color-text-tertiary)}
+.comp-ex b{color:var(--color-text-secondary)}
+.toggle{font-size:12px;color:var(--color-text-tertiary);transition:transform .2s}
+.toggle.open{transform:rotate(90deg)}
+.flow-wrap{display:flex;flex-direction:column;gap:0;align-items:center}
+.flow-box{width:100%;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.flow-arrow{text-align:center;font-size:16px;color:var(--color-text-tertiary);line-height:1.2;padding:2px 0}
+.flow-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.flow-info{flex:1}
+.flow-title{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.flow-sub{font-size:10px;color:var(--color-text-secondary);margin-top:1px}
+.flow-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:auto;flex-shrink:0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:12px 14px}
+.card-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px}
+.item{display:flex;align-items:flex-start;gap:6px;margin-bottom:5px}
+.dot{width:6px;height:6px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.item-text{font-size:11px;color:var(--color-text-secondary);line-height:1.4}
+.badge-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.badge{font-size:10px;padding:3px 8px;border-radius:4px;font-weight:500}
+</style>
+
+<div class="root">
+<div class="tabs">
+  <div class="tab on c1" onclick="show('camadas')">Camadas</div>
+  <div class="tab c2" onclick="show('ui')">Interface</div>
+  <div class="tab c3" onclick="show('dados')">Dados</div>
+  <div class="tab c4" onclick="show('logica')">Lógica</div>
+  <div class="tab c5" onclick="show('infra')">Infraestrutura</div>
+  <div class="tab c6" onclick="show('seguranca')">Segurança</div>
+  <div class="tab c7" onclick="show('ciclo')">Ciclo de vida</div>
+</div>
+
+<!-- CAMADAS -->
+<div class="panel on" id="p-camadas">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px">Clica em cada camada para expandir os detalhes. Uma app é como um bolo — cada camada depende da de baixo.</p>
+<div class="layer-stack">
+
+  <div class="layer" style="border-color:#C4622D20">
+    <div class="layer-header" onclick="toggle(this)" style="background:#FAECE7">
+      <div class="layer-num" style="background:#C4622D;color:#fff">7</div>
+      <div><div class="layer-title" style="color:#712B13">Interface do Utilizador (UI)</div><div class="layer-desc" style="color:#993C1D">O que o utilizador vê e toca</div></div>
+      <div class="toggle">›</div>
+    </div>
+    <div class="layer-body">
+      <div class="comp-grid">
+        <div class="comp"><div class="comp-name">Ecrãs</div><div class="comp-desc">Cada página da app: Home, Detalhe, Chat, Perfil</div><div class="comp-ex"><b>Ex KuGava:</b> HomeFeedScreen, ChatScreen</div></div>
+        <div class="comp"><div class="comp-name">Componentes</div><div class="comp-desc">Peças reutilizáveis: botões, cards, inputs, badges</div><div class="comp-ex"><b>Ex KuGava:</b> Button.tsx, PropertyCard.tsx</div></div>
+        <div class="comp"><div class="comp-name">Navegação</div><div class="comp-desc">Como o utilizador se move entre ecrãs</div><div class="comp-ex"><b>Ex KuGava:</b> MainTabs, HomeStack</div></div>
+        <div class="comp"><div class="comp-name">Design System</div><div class="comp-desc">Cores, tipografia, espaçamentos padronizados</div><div class="comp-ex"><b>Ex KuGava:</b> theme.ts com tokens</div></div>
+        <div class="comp"><div class="comp-name">Animações</div><div class="comp-desc">Transições, micro-interacções, feedback visual</div><div class="comp-ex"><b>Ex:</b> Animated.Value, Reanimated</div></div>
+        <div class="comp"><div class="comp-name">Assets</div><div class="comp-desc">Ícones, imagens, fontes, splash screen</div><div class="comp-ex"><b>Ex KuGava:</b> Cormorant Garamond, ícones Expo</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:#534AB720">
+    <div class="layer-header" onclick="toggle(this)" style="background:#EEEDFE">
+      <div class="layer-num" style="background:#534AB7;color:#fff">6</div>
+      <div><div class="layer-title" style="color:#26215C">Gestão de Estado</div><div class="layer-desc" style="color:#534AB7">A memória viva da app</div></div>
+      <div class="toggle">›</div>
+    </div>
+    <div class="layer-body">
+      <div class="comp-grid">
+        <div class="comp"><div class="comp-name">Estado local</div><div class="comp-desc">useState/useReducer — dados de um único componente</div><div class="comp-ex"><b>Ex KuGava:</b> dia seleccionado no calendário</div></div>
+        <div class="comp"><div class="comp-name">Estado global</div><div class="comp-desc">Dados partilhados por toda a app: utilizador, imóveis</div><div class="comp-ex"><b>Ex KuGava:</b> authStore, propertiesStore (Zustand)</div></div>
+        <div class="comp"><div class="comp-name">Cache</div><div class="comp-desc">Dados guardados temporariamente para evitar re-fetch</div><div class="comp-ex"><b>Ex:</b> react-query, SWR, stale-while-revalidate</div></div>
+        <div class="comp"><div class="comp-name">Persistência local</div><div class="comp-desc">Dados que sobrevivem ao fecho da app</div><div class="comp-ex"><b>Ex KuGava:</b> AsyncStorage para referral code</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:#185FA520">
+    <div class="layer-header" onclick="toggle(this)" style="background:#E6F1FB">
+      <div class="layer-num" style="background:#185FA5;color:#fff">5</div>
+      <div><div class="layer-title" style="color:#042C53">Lógica de Negócio</div><div class="layer-desc" style="color:#185FA5">As regras que fazem a app funcionar</div></div>
+      <div class="toggle">›</div>
+    </div>
+    <div class="layer-body">
+      <div class="comp-grid">
+        <div class="comp"><div class="comp-name">Services</div><div class="comp-desc">Funções que executam operações específicas</div><div class="comp-ex"><b>Ex KuGava:</b> propertiesService, chatService</div></div>
+        <div class="comp"><div class="comp-name">Utils / Helpers</div><div class="comp-desc">Funções puras reutilizáveis sem efeitos laterais</div><div class="comp-ex"><b>Ex KuGava:</b> commission.ts, referralHandler.ts</div></div>
+        <div class="comp"><div class="comp-name">Hooks customizados</div><div class="comp-desc">Lógica reutilizável que usa React hooks</div><div class="comp-ex"><b>Ex KuGava:</b> useReferralCode, useAuth</div></div>
+        <div class="comp"><div class="comp-name">Validações</div><div class="comp-desc">Verificar dados antes de enviar ao servidor</div><div class="comp-ex"><b>Ex:</b> Zod, Yup, validação de formulários</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:#1D9E7520">
+    <div class="layer-header" onclick="toggle(this)" style="background:#E1F5EE">
+      <div class="layer-num" style="background:#1D9E75;color:#fff">4</div>
+      <div><div class="layer-title" style="color:#04342C">Comunicação com API</div><div class="layer-desc" style="color:#0F6E56">Como a app fala com o servidor</div></div>
+      <div class="toggle">›</div>
+    </div>
+    <div class="layer-body">
+      <div class="comp-grid">
+        <div class="comp"><div class="comp-name">Cliente HTTP</div><div class="comp-desc">Fetch, Axios — faz pedidos REST ao servidor</div><div class="comp-ex"><b>Ex KuGava:</b> Supabase JS client (abstrai o fetch)</div></div>
+        <div class="comp"><div class="comp-name">WebSockets</div><div class="comp-desc">Conexão persistente para dados em tempo real</div><div class="comp-ex"><b>Ex KuGava:</b> Supabase Realtime channels</div></div>
+        <div class="comp"><div class="comp-name">Interceptors</div><div class="comp-desc">Código que corre antes/depois de cada pedido</div><div class="comp-ex"><b>Ex:</b> Adicionar auth token, tratar erros 401</div></div>
+        <div class="comp"><div class="comp-name">Gestão de erros</div><div class="comp-desc">O que fazer quando o servidor falha ou não há internet</div><div class="comp-ex"><b>Ex KuGava:</b> try/catch em cada service</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:#BA751720">
+    <div class="layer-header" onclick="toggle(this)" style="background:#FAEEDA">
+      <div class="layer-num" style="background:#BA7517;color:#fff">3</div>
+      <div><div class="layer-title" style="color:#412402">Backend / Servidor</div><div class="layer-desc" style="color:#854F0B">Onde os dados vivem e as regras são aplicadas</div></div>
+      <div class="toggle">›</div>
+    </div>
+    <div class="layer-body">
+      <div class="comp-grid">
+        <div class="comp"><div class="comp-name">Base de dados</div><div class="comp-desc">Onde todos os dados são guardados permanentemente</div><div class="comp-ex"><b>Ex KuGava:</b> PostgreSQL via Supabase</div></div>
+        <div class="comp"><div class="comp-name">Autenticação</div><div class="comp-desc">Verifica quem é o utilizador e gera tokens JWT</div><div class="comp-ex"><b>Ex KuGava:</b> Supabase Auth com email/password</div></div>
+        <div class="comp"><div class="comp-name">Storage</div><div class="comp-desc">Armazena ficheiros binários: imagens, PDFs</div><div class="comp-ex"><b>Ex KuGava:</b> Supabase Storage bucket 'properties'</div></div>
+        <div class="comp"><div class="comp-name">Funções serverless</div><div class="comp-desc">Código que corre no servidor sob demanda</div><div class="comp-ex"><b>Ex KuGava:</b> process-referral-commission</div></div>
+        <div class="comp"><div class="comp-name">Políticas de acesso</div><div class="comp-desc">Regras de quem pode ver/editar o quê</div><div class="comp-ex"><b>Ex KuGava:</b> RLS policies no Supabase</div></div>
+        <div class="comp"><div class="comp-name">Push notifications</div><div class="comp-desc">Serviço que envia notificações aos dispositivos</div><div class="comp-ex"><b>Ex KuGava:</b> Expo Push Notification Service</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:#63992220">
+    <div class="layer-header" onclick="toggle(this)" style="background:#EAF3DE">
+      <div class="layer-num" style="background:#639922;color:#fff">2</div>
+      <div><div class="layer-title" style="color:#173404">Infraestrutura</div><div class="layer-desc" style="color:#3B6D11">Os servidores e serviços que suportam tudo</div></div>
+      <div class="toggle">›</div>
+    </div>
+    <div class="layer-body">
+      <div class="comp-grid">
+        <div class="comp"><div class="comp-name">Cloud provider</div><div class="comp-desc">Onde os servidores fisicamente correm</div><div class="comp-ex"><b>Ex KuGava:</b> AWS (via Supabase), região África</div></div>
+        <div class="comp"><div class="comp-name">CDN</div><div class="comp-desc">Rede global que serve imagens/assets rapidamente</div><div class="comp-ex"><b>Ex KuGava:</b> Supabase CDN / Cloudflare</div></div>
+        <div class="comp"><div class="comp-name">DNS</div><div class="comp-desc">Traduz domínios em endereços IP</div><div class="comp-ex"><b>Ex:</b> kugava.mz → IP do servidor</div></div>
+        <div class="comp"><div class="comp-name">Monitoring</div><div class="comp-desc">Alertas quando algo falha em produção</div><div class="comp-ex"><b>Ex:</b> Sentry para erros, Supabase Logs</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer" style="border-color:#88878020">
+    <div class="layer-header" onclick="toggle(this)" style="background:#F1EFE8">
+      <div class="layer-num" style="background:#5F5E5A;color:#fff">1</div>
+      <div><div class="layer-title" style="color:#2C2C2A">Sistema Operativo / Dispositivo</div><div class="layer-desc" style="color:#5F5E5A">A base de tudo — Android ou iOS</div></div>
+      <div class="toggle">›</div>
+    </div>
+    <div class="layer-body">
+      <div class="comp-grid">
+        <div class="comp"><div class="comp-name">Runtime nativo</div><div class="comp-desc">Android (Java/Kotlin) ou iOS (Swift) que executa a app</div><div class="comp-ex"><b>Ex KuGava:</b> React Native + bridge nativo</div></div>
+        <div class="comp"><div class="comp-name">Permissões</div><div class="comp-desc">Câmera, notificações, localização — o utilizador autoriza</div><div class="comp-ex"><b>Ex KuGava:</b> Galeria para fotos, Push notifications</div></div>
+        <div class="comp"><div class="comp-name">Sensores / Hardware</div><div class="comp-desc">GPS, câmera, acelerómetro, biometria</div><div class="comp-ex"><b>Ex KuGava:</b> Câmera para fotos de imóveis</div></div>
+        <div class="comp"><div class="comp-name">App Store</div><div class="comp-desc">Google Play / App Store distribuem a app</div><div class="comp-ex"><b>Ex KuGava:</b> Build .aab via EAS → Play Store</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- INTERFACE UI -->
+<div class="panel" id="p-ui">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px">A interface é composta por 4 tipos de elemento que se combinam para criar qualquer ecrã.</p>
+<div class="two-col" style="margin-bottom:12px">
+  <div class="card">
+    <div class="card-title" style="color:#C4622D">Átomos — blocos básicos</div>
+    <div class="item"><div class="dot" style="background:#C4622D"></div><div class="item-text"><b>Texto</b> — título, parágrafo, label, caption</div></div>
+    <div class="item"><div class="dot" style="background:#C4622D"></div><div class="item-text"><b>Botão</b> — primário, secundário, ghost, ícone</div></div>
+    <div class="item"><div class="dot" style="background:#C4622D"></div><div class="item-text"><b>Input</b> — texto, número, password, data</div></div>
+    <div class="item"><div class="dot" style="background:#C4622D"></div><div class="item-text"><b>Imagem</b> — local, remota, com placeholder</div></div>
+    <div class="item"><div class="dot" style="background:#C4622D"></div><div class="item-text"><b>Ícone</b> — SVG ou font icons (Expo Icons)</div></div>
+    <div class="item"><div class="dot" style="background:#C4622D"></div><div class="item-text"><b>Indicadores</b> — loading spinner, progress bar</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color:#534AB7">Moléculas — combinações</div>
+    <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text"><b>Card de imóvel</b> — imagem + preço + localização</div></div>
+    <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text"><b>Campo de formulário</b> — label + input + erro</div></div>
+    <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text"><b>Item de lista</b> — avatar + nome + subtítulo</div></div>
+    <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text"><b>Barra de pesquisa</b> — ícone + input + limpar</div></div>
+    <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text"><b>Mensagem de chat</b> — bubble + hora + status</div></div>
+    <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text"><b>Badge de estado</b> — ícone + texto + cor</div></div>
+  </div>
+</div>
+<div class="two-col">
+  <div class="card">
+    <div class="card-title" style="color:#185FA5">Organismos — secções</div>
+    <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text"><b>Header</b> — logo + pesquisa + avatar</div></div>
+    <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text"><b>Feed de imóveis</b> — lista paginada de cards</div></div>
+    <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text"><b>Galeria de fotos</b> — scroll horizontal + dots</div></div>
+    <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text"><b>Thread de chat</b> — FlatList invertida de mensagens</div></div>
+    <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text"><b>Bottom navigation</b> — tabs com ícones activos/inactivos</div></div>
+    <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text"><b>Formulário de passo</b> — stepper + inputs + botão</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color:#1D9E75">Templates — ecrãs completos</div>
+    <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text"><b>Ecrã de lista</b> — header + filtros + lista + nav</div></div>
+    <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text"><b>Ecrã de detalhe</b> — hero + info + CTA fixo</div></div>
+    <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text"><b>Ecrã de chat</b> — header + mensagens + input</div></div>
+    <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text"><b>Ecrã de formulário</b> — passos + validação + submit</div></div>
+    <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text"><b>Ecrã de dashboard</b> — métricas + gráficos + lista</div></div>
+    <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text"><b>Ecrã de auth</b> — logo + inputs + botões sociais</div></div>
+  </div>
+</div>
+</div>
+
+<!-- DADOS -->
+<div class="panel" id="p-dados">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px">Os dados percorrem 5 camadas desde o servidor até aparecerem no ecrã. Cada camada transforma o dado.</p>
+<div class="flow-wrap">
+  <div class="flow-box" style="background:#E6F1FB;border:0.5px solid #B5D4F4">
+    <div class="flow-icon" style="background:#185FA5;color:#fff;font-size:12px">DB</div>
+    <div class="flow-info"><div class="flow-title" style="color:#042C53">Base de dados PostgreSQL</div><div class="flow-sub" style="color:#185FA5">Dados em formato relacional — tabelas, colunas, relações entre entidades</div></div>
+    <div class="flow-tag" style="background:#185FA5;color:#fff">Origem</div>
+  </div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-box" style="background:#E1F5EE;border:0.5px solid #9FE1CB">
+    <div class="flow-icon" style="background:#1D9E75;color:#fff;font-size:12px">API</div>
+    <div class="flow-info"><div class="flow-title" style="color:#04342C">API REST / GraphQL</div><div class="flow-sub" style="color:#0F6E56">Supabase expõe os dados como JSON via HTTP. RLS filtra o que cada utilizador pode ver.</div></div>
+    <div class="flow-tag" style="background:#1D9E75;color:#fff">Servidor</div>
+  </div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-box" style="background:#FAEEDA;border:0.5px solid #FAC775">
+    <div class="flow-icon" style="background:#BA7517;color:#fff;font-size:11px">SVC</div>
+    <div class="flow-info"><div class="flow-title" style="color:#412402">Service (propertiesService.ts)</div><div class="flow-sub" style="color:#854F0B">Chama a API, trata erros, transforma o JSON no formato que a app precisa</div></div>
+    <div class="flow-tag" style="background:#BA7517;color:#fff">Cliente</div>
+  </div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-box" style="background:#EEEDFE;border:0.5px solid #CECBF6">
+    <div class="flow-icon" style="background:#534AB7;color:#fff;font-size:11px">STR</div>
+    <div class="flow-info"><div class="flow-title" style="color:#26215C">Store Zustand (propertiesStore.ts)</div><div class="flow-sub" style="color:#534AB7">Guarda os dados em memória, disponibiliza para toda a app, dispara re-renders quando muda</div></div>
+    <div class="flow-tag" style="background:#534AB7;color:#fff">Estado</div>
+  </div>
+  <div class="flow-arrow">↓</div>
+  <div class="flow-box" style="background:#FAECE7;border:0.5px solid #F5C4B3">
+    <div class="flow-icon" style="background:#C4622D;color:#fff;font-size:11px">UI</div>
+    <div class="flow-info"><div class="flow-title" style="color:#4A1B0C">Componente React Native</div><div class="flow-sub" style="color:#993C1D">Lê do store, renderiza pixels no ecrã. Quando o utilizador age, dispara acções que voltam ao início.</div></div>
+    <div class="flow-tag" style="background:#C4622D;color:#fff">Ecrã</div>
+  </div>
+</div>
+</div>
+
+<!-- LÓGICA -->
+<div class="panel" id="p-logica">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px">A lógica de negócio é o cérebro da app — as regras que transformam acções em resultados.</p>
+<div class="two-col" style="margin-bottom:10px">
+  <div class="card">
+    <div class="card-title">Tipos de lógica</div>
+    <div class="item"><div class="dot" style="background:#C4622D"></div><div class="item-text"><b>Validação</b> — verificar se os dados estão correctos antes de agir</div></div>
+    <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text"><b>Transformação</b> — converter dados de um formato para outro</div></div>
+    <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text"><b>Cálculo</b> — operações matemáticas (preços, comissões, datas)</div></div>
+    <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text"><b>Autorização</b> — verificar se o utilizador pode fazer a acção</div></div>
+    <div class="item"><div class="dot" style="background:#BA7517"></div><div class="item-text"><b>Orquestração</b> — coordenar múltiplas operações em sequência</div></div>
+    <div class="item"><div class="dot" style="background:#639922"></div><div class="item-text"><b>Notificação</b> — decidir quando e quem notificar</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Onde corre cada regra</div>
+    <div class="item"><div class="dot" style="background:#E24B4A"></div><div class="item-text"><b>Só no servidor</b> — cálculo de comissões, geração de códigos, preços</div></div>
+    <div class="item"><div class="dot" style="background:#BA7517"></div><div class="item-text"><b>No servidor e cliente</b> — validação de formulários (UX no cliente, segurança no servidor)</div></div>
+    <div class="item"><div class="dot" style="background:#639922"></div><div class="item-text"><b>Só no cliente</b> — formatação de datas, ordenação de listas, animações</div></div>
+    <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text"><b>Regra de ouro</b> — nunca confiar só no cliente para dados com impacto financeiro</div></div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-title">Exemplos reais no KuGava</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">
+    <div style="background:var(--color-background-secondary);border-radius:8px;padding:9px 10px"><div style="font-size:10px;font-weight:600;color:#C4622D;margin-bottom:3px">commission.ts</div><div style="font-size:10px;color:var(--color-text-secondary);line-height:1.4">Calcula quanto o afiliado ganha: 2% para agentes, 0.5% ou 500 MZN para utilizadores</div></div>
+    <div style="background:var(--color-background-secondary);border-radius:8px;padding:9px 10px"><div style="font-size:10px;font-weight:600;color:#534AB7;margin-bottom:3px">referralHandler.ts</div><div style="font-size:10px;color:var(--color-text-secondary);line-height:1.4">Detecta link de afiliado ao abrir a app, guarda código no AsyncStorage até ao registo</div></div>
+    <div style="background:var(--color-background-secondary);border-radius:8px;padding:9px 10px"><div style="font-size:10px;font-weight:600;color:#1D9E75;margin-bottom:3px">updateAffiliateLevel()</div><div style="font-size:10px;color:var(--color-text-secondary);line-height:1.4">Bronze→Prata→Ouro→Platina conforme número de conversões acumuladas</div></div>
+  </div>
+</div>
+</div>
+
+<!-- INFRA -->
+<div class="panel" id="p-infra">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px">A infraestrutura é invisível para o utilizador mas é o que mantém a app de pé 24/7.</p>
+<div class="flow-wrap" style="gap:8px">
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%">
+    <div class="card">
+      <div class="card-title" style="color:#185FA5">Hospedagem</div>
+      <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text">Servidores físicos ou virtuais na nuvem</div></div>
+      <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text">Região geográfica afecta latência</div></div>
+      <div class="item"><div class="dot" style="background:#185FA5"></div><div class="item-text">Auto-scaling para picos de tráfego</div></div>
+      <div class="badge-row"><span class="badge" style="background:#E6F1FB;color:#185FA5">AWS</span><span class="badge" style="background:#E6F1FB;color:#185FA5">GCP</span><span class="badge" style="background:#E6F1FB;color:#185FA5">Azure</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:#1D9E75">Base de Dados</div>
+      <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text">Backups automáticos diários</div></div>
+      <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text">Réplicas de leitura para escala</div></div>
+      <div class="item"><div class="dot" style="background:#1D9E75"></div><div class="item-text">Connection pooling (pgBouncer)</div></div>
+      <div class="badge-row"><span class="badge" style="background:#E1F5EE;color:#1D9E75">PostgreSQL</span><span class="badge" style="background:#E1F5EE;color:#1D9E75">Supabase</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:#BA7517">Distribuição</div>
+      <div class="item"><div class="dot" style="background:#BA7517"></div><div class="item-text">CDN serve imagens do edge mais próximo</div></div>
+      <div class="item"><div class="dot" style="background:#BA7517"></div><div class="item-text">Cache de 24h para assets estáticos</div></div>
+      <div class="item"><div class="dot" style="background:#BA7517"></div><div class="item-text">Compressão gzip/brotli automática</div></div>
+      <div class="badge-row"><span class="badge" style="background:#FAEEDA;color:#BA7517">Cloudflare</span></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%">
+    <div class="card">
+      <div class="card-title" style="color:#534AB7">CI/CD Pipeline</div>
+      <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text">Push no git → testes automáticos</div></div>
+      <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text">Build automático se testes passam</div></div>
+      <div class="item"><div class="dot" style="background:#534AB7"></div><div class="item-text">Deploy para staging → produção</div></div>
+      <div class="badge-row"><span class="badge" style="background:#EEEDFE;color:#534AB7">EAS Build</span><span class="badge" style="background:#EEEDFE;color:#534AB7">GitHub Actions</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:#E24B4A">Monitoring</div>
+      <div class="item"><div class="dot" style="background:#E24B4A"></div><div class="item-text">Alertas de erros em tempo real</div></div>
+      <div class="item"><div class="dot" style="background:#E24B4A"></div><div class="item-text">Logs de cada pedido à API</div></div>
+      <div class="item"><div class="dot" style="background:#E24B4A"></div><div class="item-text">Uptime monitoring 24/7</div></div>
+      <div class="badge-row"><span class="badge" style="background:#FCEBEB;color:#A32D2D">Sentry</span><span class="badge" style="background:#FCEBEB;color:#A32D2D">Supabase Logs</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:#639922">Analytics</div>
+      <div class="item"><div class="dot" style="background:#639922"></div><div class="item-text">Eventos de utilizador rastreados</div></div>
+      <div class="item"><div class="dot" style="background:#639922"></div><div class="item-text">Funis de conversão visualizados</div></div>
+      <div class="item"><div class="dot" style="background:#639922"></div><div class="item-text">Retenção e churn medidos</div></div>
+      <div class="badge-row"><span class="badge" style="background:#EAF3DE;color:#3B6D11">Mixpanel</span><span class="badge" style="background:#EAF3DE;color:#3B6D11">PostHog</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SEGURANÇA -->
+<div class="panel" id="p-seguranca">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px">Segurança funciona em camadas — cada uma cobre o que a anterior pode deixar passar.</p>
+<div class="flow-wrap" style="gap:10px">
+  <div class="flow-box" style="background:#FCEBEB;border:0.5px solid #F7C1C1">
+    <div class="flow-icon" style="background:#A32D2D;color:#fff;font-size:11px">1</div>
+    <div class="flow-info"><div class="flow-title" style="color:#501313">Autenticação — quem és tu?</div><div class="flow-sub" style="color:#A32D2D">JWT tokens assinados pelo Supabase. Expiram em 1h e são renovados automaticamente. Sem token válido = sem acesso.</div></div>
+  </div>
+  <div class="flow-box" style="background:#FAEEDA;border:0.5px solid #FAC775">
+    <div class="flow-icon" style="background:#854F0B;color:#fff;font-size:11px">2</div>
+    <div class="flow-info"><div class="flow-title" style="color:#412402">Autorização — o que podes fazer?</div><div class="flow-sub" style="color:#854F0B">RLS policies no PostgreSQL. Cada query é filtrada: só vês os teus dados, as tuas mensagens, os teus imóveis.</div></div>
+  </div>
+  <div class="flow-box" style="background:#E6F1FB;border:0.5px solid #B5D4F4">
+    <div class="flow-icon" style="background:#185FA5;color:#fff;font-size:11px">3</div>
+    <div class="flow-info"><div class="flow-title" style="color:#042C53">Validação — os dados são válidos?</div><div class="flow-sub" style="color:#185FA5">Validar no cliente (UX) E no servidor (segurança). Tipos, formatos, limites, conteúdo injectado.</div></div>
+  </div>
+  <div class="flow-box" style="background:#E1F5EE;border:0.5px solid #9FE1CB">
+    <div class="flow-icon" style="background:#1D9E75;color:#fff;font-size:11px">4</div>
+    <div class="flow-info"><div class="flow-title" style="color:#04342C">Encriptação — os dados estão protegidos?</div><div class="flow-sub" style="color:#0F6E56">HTTPS para tudo em trânsito. Passwords com bcrypt (Supabase). Dados sensíveis nunca em logs.</div></div>
+  </div>
+  <div class="flow-box" style="background:#EEEDFE;border:0.5px solid #CECBF6">
+    <div class="flow-icon" style="background:#534AB7;color:#fff;font-size:11px">5</div>
+    <div class="flow-info"><div class="flow-title" style="color:#26215C">Rate limiting — estás a abusar?</div><div class="flow-sub" style="color:#534AB7">Limite de pedidos por IP e por utilizador. Previne spam de registos, força bruta em passwords, abuso do sistema de afiliados.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- CICLO DE VIDA -->
+<div class="panel" id="p-ciclo">
+<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px">Uma app não nasce pronta — passa por fases contínuas de evolução.</p>
+<div class="flow-wrap" style="gap:0">
+  <div class="flow-box" style="background:var(--color-background-secondary);border-radius:10px 10px 0 0;border:0.5px solid var(--color-border-tertiary);border-bottom:none">
+    <div class="flow-icon" style="background:#534AB7;color:#fff;font-size:11px">1</div>
+    <div class="flow-info"><div class="flow-title">Planeamento e design</div><div class="flow-sub">Arquitectura, wireframes, design system, escolha do stack</div></div>
+    <div class="flow-tag" style="background:#EEEDFE;color:#534AB7">KuGava: feito ✓</div>
+  </div>
+  <div class="flow-box" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-top:none;border-bottom:none">
+    <div class="flow-icon" style="background:#C4622D;color:#fff;font-size:11px">2</div>
+    <div class="flow-info"><div class="flow-title">Desenvolvimento MVP</div><div class="flow-sub">Features core funcionais, dados reais, testes básicos</div></div>
+    <div class="flow-tag" style="background:#FAECE7;color:#C4622D">KuGava: feito ✓</div>
+  </div>
+  <div class="flow-box" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-top:none;border-bottom:none">
+    <div class="flow-icon" style="background:#185FA5;color:#fff;font-size:11px">3</div>
+    <div class="flow-info"><div class="flow-title">Testes e qualidade</div><div class="flow-sub">Auditoria de segurança, performance, erros, UX em dispositivos reais</div></div>
+    <div class="flow-tag" style="background:#E6F1FB;color:#185FA5">KuGava: a fazer</div>
+  </div>
+  <div class="flow-box" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-top:none;border-bottom:none">
+    <div class="flow-icon" style="background:#1D9E75;color:#fff;font-size:11px">4</div>
+    <div class="flow-info"><div class="flow-title">Lançamento (Play Store)</div><div class="flow-sub">EAS Build → APK de teste → AAB para produção → ficha da loja</div></div>
+    <div class="flow-tag" style="background:#E1F5EE;color:#1D9E75">KuGava: próximo</div>
+  </div>
+  <div class="flow-box" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-top:none;border-bottom:none">
+    <div class="flow-icon" style="background:#BA7517;color:#fff;font-size:11px">5</div>
+    <div class="flow-info"><div class="flow-title">Monitorização em produção</div><div class="flow-sub">Sentry para erros, analytics para comportamento, logs do Supabase</div></div>
+    <div class="flow-tag" style="background:#FAEEDA;color:#BA7517">v1.0</div>
+  </div>
+  <div class="flow-box" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-top:none;border-bottom:none">
+    <div class="flow-icon" style="background:#639922;color:#fff;font-size:11px">6</div>
+    <div class="flow-info"><div class="flow-title">Iteração contínua</div><div class="flow-sub">Features v1.1: mapa, avaliações, M-Pesa. Baseado em dados reais de utilizadores.</div></div>
+    <div class="flow-tag" style="background:#EAF3DE;color:#3B6D11">v1.1 futura</div>
+  </div>
+  <div class="flow-box" style="background:var(--color-background-secondary);border-radius:0 0 10px 10px;border:0.5px solid var(--color-border-tertiary);border-top:none">
+    <div class="flow-icon" style="background:#5F5E5A;color:#fff;font-size:11px">↻</div>
+    <div class="flow-info"><div class="flow-title">Escala e optimização</div><div class="flow-sub">Índices, CDN, cache, réplicas — à medida que os utilizadores crescem</div></div>
+    <div class="flow-tag" style="background:#F1EFE8;color:#5F5E5A">10k+ users</div>
+  </div>
+</div>
+</div>
+
+</div>
+<script>
+function show(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('on');
+  event.target.classList.add('on');
+}
+function toggle(header){
+  const body=header.nextElementSibling;
+  const arrow=header.querySelector('.toggle');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  arrow.classList.toggle('open',!isOpen);
+}
+</script>

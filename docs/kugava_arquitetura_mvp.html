@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KuGava — Arquitetura do MVP</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0F0D0B;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px 64px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .logo {
+    font-size: 42px;
+    font-weight: 300;
+    color: #FAF6EF;
+    letter-spacing: -1px;
+    line-height: 1;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+  .logo span { color: #C4622D; font-weight: 600; }
+
+  .tagline {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #6B5E52;
+    margin-top: 8px;
+  }
+
+  .diagram-card {
+    background: #1A1512;
+    border: 0.5px solid rgba(196, 98, 45, 0.18);
+    border-radius: 20px;
+    padding: 32px 28px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  }
+
+  .diagram-card svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .legend-section {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 0.5px solid rgba(196, 98, 45, 0.15);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 28px;
+    justify-content: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    color: #A89880;
+    letter-spacing: 0.04em;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  footer {
+    margin-top: 32px;
+    font-size: 10px;
+    color: #4A3D34;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Ku<span>Gava</span></div>
+  <div class="tagline">Marketplace Imobiliário · Moçambique · Arquitetura MVP</div>
+</header>
+
+<div class="diagram-card">
+  <svg viewBox="0 0 680 720" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="340" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="500" fill="#FAF6EF">KuGava — Arquitetura do MVP</text>
+
+  <!-- ROW 1 label -->
+  <text x="340" y="68" text-anchor="middle" font-family="Sora, sans-serif" font-size="12" fill="#A89880">Tipos de utilizador</text>
+
+  <!-- Comprador -->
+  <g>
+    <rect x="40" y="78" width="130" height="52" rx="8" fill="#085041" stroke="#5DCAA5" stroke-width="0.5"/>
+    <text x="105" y="98" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#9FE1CB">Comprador</text>
+    <text x="105" y="116" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#5DCAA5">Pesquisa e contacta</text>
+  </g>
+
+  <!-- Vendedor -->
+  <g>
+    <rect x="195" y="78" width="130" height="52" rx="8" fill="#085041" stroke="#5DCAA5" stroke-width="0.5"/>
+    <text x="260" y="98" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#9FE1CB">Vendedor</text>
+    <text x="260" y="116" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#5DCAA5">Lista imóveis</text>
+  </g>
+
+  <!-- Agente -->
+  <g>
+    <rect x="350" y="78" width="130" height="52" rx="8" fill="#26215C" stroke="#AFA9EC" stroke-width="0.5"/>
+    <text x="415" y="98" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#CECBF6">Agente</text>
+    <text x="415" y="116" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#AFA9EC">Gere e indica</text>
+  </g>
+
+  <!-- Afiliado -->
+  <g>
+    <rect x="505" y="78" width="135" height="52" rx="8" fill="#412402" stroke="#EF9F27" stroke-width="0.5"/>
+    <text x="572" y="98" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#FAC775">Afiliado</text>
+    <text x="572" y="116" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#EF9F27">Indica e ganha</text>
+  </g>
+
+  <!-- ROW 2 label -->
+  <text x="340" y="166" text-anchor="middle" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Módulos principais</text>
+
+  <!-- Listagens -->
+  <g>
+    <rect x="40" y="175" width="148" height="68" rx="8" fill="#042C53" stroke="#85B7EB" stroke-width="0.5"/>
+    <text x="114" y="200" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#B5D4F4">Listagens</text>
+    <text x="114" y="220" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#85B7EB">Casas, terrenos,</text>
+    <text x="114" y="234" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#85B7EB">arrendamentos</text>
+  </g>
+
+  <!-- Chat -->
+  <g>
+    <rect x="206" y="175" width="148" height="68" rx="8" fill="#042C53" stroke="#85B7EB" stroke-width="0.5"/>
+    <text x="280" y="200" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#B5D4F4">Chat em tempo real</text>
+    <text x="280" y="220" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#85B7EB">Comprador ↔ Vendedor</text>
+    <text x="280" y="234" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#85B7EB">Comprador ↔ Agente</text>
+  </g>
+
+  <!-- Agendamentos -->
+  <g>
+    <rect x="372" y="175" width="148" height="68" rx="8" fill="#042C53" stroke="#85B7EB" stroke-width="0.5"/>
+    <text x="446" y="200" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#B5D4F4">Agendamentos</text>
+    <text x="446" y="220" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#85B7EB">Visitas ao imóvel</text>
+    <text x="446" y="234" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#85B7EB">Confirmação e lembretes</text>
+  </g>
+
+  <!-- Afiliados módulo -->
+  <g>
+    <rect x="538" y="175" width="102" height="68" rx="8" fill="#26215C" stroke="#AFA9EC" stroke-width="0.5"/>
+    <text x="589" y="200" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#CECBF6">Afiliados</text>
+    <text x="589" y="220" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#AFA9EC">Comissões</text>
+    <text x="589" y="234" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#AFA9EC">e indicações</text>
+  </g>
+
+  <!-- Arrows users → modules -->
+  <line x1="105" y1="130" x2="105" y2="173" stroke="#5DCAA5" stroke-dasharray="4 3" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="260" y1="130" x2="230" y2="173" stroke="#5DCAA5" stroke-dasharray="4 3" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="415" y1="130" x2="400" y2="173" stroke="#AFA9EC" stroke-dasharray="4 3" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="572" y1="130" x2="589" y2="173" stroke="#EF9F27" stroke-dasharray="4 3" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- ROW 3 label -->
+  <text x="340" y="272" text-anchor="middle" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Funcionalidades de suporte</text>
+
+  <!-- Notificações -->
+  <g>
+    <rect x="40" y="282" width="136" height="52" rx="8" fill="#4A1B0C" stroke="#F0997B" stroke-width="0.5"/>
+    <text x="108" y="302" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#F5C4B3">Notificações</text>
+    <text x="108" y="320" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#F0997B">Push e in-app</text>
+  </g>
+
+  <!-- Pesquisa -->
+  <g>
+    <rect x="192" y="282" width="136" height="52" rx="8" fill="#4A1B0C" stroke="#F0997B" stroke-width="0.5"/>
+    <text x="260" y="302" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#F5C4B3">Pesquisa e filtros</text>
+    <text x="260" y="320" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#F0997B">Preço, zona, tipo</text>
+  </g>
+
+  <!-- Galeria + Mapa -->
+  <g>
+    <rect x="344" y="282" width="136" height="52" rx="8" fill="#4A1B0C" stroke="#F0997B" stroke-width="0.5"/>
+    <text x="412" y="302" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#F5C4B3">Galeria + Mapa</text>
+    <text x="412" y="320" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#F0997B">Fotos e localização</text>
+  </g>
+
+  <!-- Painel afiliado -->
+  <g>
+    <rect x="496" y="282" width="144" height="52" rx="8" fill="#4A1B0C" stroke="#F0997B" stroke-width="0.5"/>
+    <text x="568" y="302" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#F5C4B3">Painel afiliado</text>
+    <text x="568" y="320" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#F0997B">Ganhos e links</text>
+  </g>
+
+  <!-- Arrows modules → support -->
+  <line x1="114" y1="243" x2="108" y2="280" stroke="#85B7EB" stroke-dasharray="4 3" stroke-width="0.8" opacity="0.5" marker-end="url(#arrow)"/>
+  <line x1="280" y1="243" x2="260" y2="280" stroke="#85B7EB" stroke-dasharray="4 3" stroke-width="0.8" opacity="0.5" marker-end="url(#arrow)"/>
+  <line x1="446" y1="243" x2="412" y2="280" stroke="#85B7EB" stroke-dasharray="4 3" stroke-width="0.8" opacity="0.5" marker-end="url(#arrow)"/>
+  <line x1="589" y1="243" x2="568" y2="280" stroke="#AFA9EC" stroke-dasharray="4 3" stroke-width="0.8" opacity="0.5" marker-end="url(#arrow)"/>
+
+  <!-- ROW 4 label -->
+  <text x="340" y="368" text-anchor="middle" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Modelo de afiliados — dois fluxos</text>
+
+  <!-- Modelo A -->
+  <g>
+    <rect x="40" y="378" width="280" height="72" rx="8" fill="#412402" stroke="#EF9F27" stroke-width="0.5"/>
+    <text x="180" y="400" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#FAC775">Modelo A — Agente indica comprador</text>
+    <text x="180" y="420" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#EF9F27">Agente regista-se, cria link de indicação</text>
+    <text x="180" y="436" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#EF9F27">Ganha % sobre negócio fechado</text>
+  </g>
+
+  <!-- Modelo B -->
+  <g>
+    <rect x="360" y="378" width="280" height="72" rx="8" fill="#412402" stroke="#EF9F27" stroke-width="0.5"/>
+    <text x="500" y="400" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#FAC775">Modelo B — Utilizador indica utilizador</text>
+    <text x="500" y="420" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#EF9F27">Qualquer utilizador partilha link</text>
+    <text x="500" y="436" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#EF9F27">Ganha bónus por conversão</text>
+  </g>
+
+  <!-- ROW 5 label -->
+  <text x="340" y="478" text-anchor="middle" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Fluxo principal — do interesse ao agendamento</text>
+
+  <!-- Fluxo boxes -->
+  <g>
+    <rect x="40" y="488" width="98" height="44" rx="8" fill="#2C2C2A" stroke="#888780" stroke-width="0.5"/>
+    <text x="89" y="514" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" font-weight="500" fill="#D3D1C7">Descobre imóvel</text>
+  </g>
+  <line x1="138" y1="510" x2="162" y2="510" stroke="#888780" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="162" y="488" width="98" height="44" rx="8" fill="#2C2C2A" stroke="#888780" stroke-width="0.5"/>
+    <text x="211" y="514" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" font-weight="500" fill="#D3D1C7">Entra em chat</text>
+  </g>
+  <line x1="260" y1="510" x2="284" y2="510" stroke="#888780" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="284" y="488" width="108" height="44" rx="8" fill="#2C2C2A" stroke="#888780" stroke-width="0.5"/>
+    <text x="338" y="514" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" font-weight="500" fill="#D3D1C7">Agenda visita</text>
+  </g>
+  <line x1="392" y1="510" x2="416" y2="510" stroke="#888780" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="416" y="488" width="108" height="44" rx="8" fill="#085041" stroke="#5DCAA5" stroke-width="0.5"/>
+    <text x="470" y="514" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" font-weight="500" fill="#9FE1CB">Confirmação</text>
+  </g>
+  <line x1="524" y1="510" x2="548" y2="510" stroke="#5DCAA5" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="548" y="488" width="92" height="44" rx="8" fill="#27500A" stroke="#97C459" stroke-width="0.5"/>
+    <text x="594" y="514" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" font-weight="500" fill="#C0DD97">Negócio</text>
+  </g>
+
+  <!-- ROW 6 label -->
+  <text x="340" y="568" text-anchor="middle" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Modelo de receita</text>
+
+  <!-- Receita 1 -->
+  <g>
+    <rect x="40" y="578" width="145" height="52" rx="8" fill="#27500A" stroke="#97C459" stroke-width="0.5"/>
+    <text x="112" y="598" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#C0DD97">Comissão</text>
+    <text x="112" y="616" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#97C459">% por negócio fechado</text>
+  </g>
+
+  <!-- Receita 2 -->
+  <g>
+    <rect x="203" y="578" width="145" height="52" rx="8" fill="#27500A" stroke="#97C459" stroke-width="0.5"/>
+    <text x="275" y="598" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#C0DD97">Anúncio destacado</text>
+    <text x="275" y="616" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#97C459">Vendedor paga boost</text>
+  </g>
+
+  <!-- Receita 3 -->
+  <g>
+    <rect x="366" y="578" width="145" height="52" rx="8" fill="#27500A" stroke="#97C459" stroke-width="0.5"/>
+    <text x="438" y="598" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#C0DD97">Subscrição agente</text>
+    <text x="438" y="616" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#97C459">Plano mensal premium</text>
+  </g>
+
+  <!-- Receita 4 -->
+  <g>
+    <rect x="529" y="578" width="111" height="52" rx="8" fill="#27500A" stroke="#97C459" stroke-width="0.5"/>
+    <text x="584" y="598" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="14" font-weight="500" fill="#C0DD97">Bónus afiliado</text>
+    <text x="584" y="616" text-anchor="middle" dominant-baseline="central" font-family="Sora,sans-serif" font-size="12" fill="#97C459">Plataforma retém %</text>
+  </g>
+
+  <!-- Legend -->
+  <rect x="40" y="658" width="12" height="12" rx="2" fill="#1D9E75"/>
+  <text x="58" y="669" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Receita</text>
+  <rect x="130" y="658" width="12" height="12" rx="2" fill="#378ADD"/>
+  <text x="148" y="669" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Módulo core</text>
+  <rect x="250" y="658" width="12" height="12" rx="2" fill="#BA7517"/>
+  <text x="268" y="669" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Afiliados</text>
+  <rect x="340" y="658" width="12" height="12" rx="2" fill="#534AB7"/>
+  <text x="358" y="669" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Agente</text>
+  <rect x="430" y="658" width="12" height="12" rx="2" fill="#D85A30"/>
+  <text x="448" y="669" font-family="Sora,sans-serif" font-size="12" fill="#A89880">Suporte</text>
+
+  </svg>
+
+  <div class="legend-section">
+    <div class="legend-item"><div class="legend-dot" style="background:#1D9E75"></div>Receita</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#378ADD"></div>Módulo core</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#BA7517"></div>Afiliados</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#534AB7"></div>Agente</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div>Suporte</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#5DCAA5"></div>Utilizadores</div>
+  </div>
+</div>
+
+<footer>kugava.mz · Arquitetura MVP · 2025</footer>
+
+</body>
+</html>

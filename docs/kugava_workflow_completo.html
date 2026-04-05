@@ -1,0 +1,477 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.wrap{padding:0 0 2rem}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:12px}
+.tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:var(--color-background-primary);transition:all .15s}
+.tab.on{background:#C4622D;color:#fff;border-color:#C4622D}
+.panel{display:none}
+.panel.on{display:block}
+svg{width:100%;display:block}
+</style>
+
+<div class="wrap">
+<div class="tabs">
+  <div class="tab on" onclick="show('auth')">Auth</div>
+  <div class="tab" onclick="show('comprador')">Comprador</div>
+  <div class="tab" onclick="show('vendedor')">Vendedor</div>
+  <div class="tab" onclick="show('chat')">Chat & Agenda</div>
+  <div class="tab" onclick="show('afiliado')">Afiliados</div>
+  <div class="tab" onclick="show('dados')">Dados & Backend</div>
+  <div class="tab" onclick="show('receita')">Receita</div>
+</div>
+
+<!-- AUTH -->
+<div class="panel on" id="p-auth">
+<svg viewBox="0 0 680 420">
+<defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="node c-gray" onclick="sendPrompt('Como funciona o arranque da app KuGava?')">
+  <rect x="270" y="20" width="140" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="42" text-anchor="middle" dominant-baseline="central">App arranca</text>
+</g>
+<line x1="340" y1="64" x2="340" y2="94" class="arr" marker-end="url(#a1)"/>
+
+<g class="node c-blue" onclick="sendPrompt('Como o KuGava verifica a sessão do utilizador?')">
+  <rect x="240" y="94" width="200" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="111" text-anchor="middle" dominant-baseline="central">Verifica sessão Supabase</text>
+  <text class="ts" x="340" y="127" text-anchor="middle" dominant-baseline="central">getSession() + onAuthStateChange</text>
+</g>
+
+<line x1="240" y1="116" x2="140" y2="158" class="arr" marker-end="url(#a1)" stroke="#639922"/>
+<line x1="440" y1="116" x2="540" y2="158" class="arr" marker-end="url(#a1)" stroke="#E24B4A"/>
+
+<text class="ts" x="170" y="150" text-anchor="middle">Sessão activa</text>
+<text class="ts" x="515" y="150" text-anchor="middle">Sem sessão</text>
+
+<g class="node c-green" onclick="sendPrompt('O que acontece quando o utilizador já está autenticado no KuGava?')">
+  <rect x="50" y="158" width="180" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="140" y="175" text-anchor="middle" dominant-baseline="central">MainTabs (app)</text>
+  <text class="ts" x="140" y="191" text-anchor="middle" dominant-baseline="central">Home, Pesquisa, Chat...</text>
+</g>
+
+<g class="node c-coral" onclick="sendPrompt('Como funciona o ecrã de login do KuGava?')">
+  <rect x="450" y="158" width="180" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="540" y="175" text-anchor="middle" dominant-baseline="central">AuthStack</text>
+  <text class="ts" x="540" y="191" text-anchor="middle" dominant-baseline="central">Login ou Registo</text>
+</g>
+
+<line x1="540" y1="202" x2="540" y2="232" class="arr" marker-end="url(#a1)"/>
+
+<g class="node c-blue" onclick="sendPrompt('Quais os tipos de conta disponíveis no KuGava?')">
+  <rect x="410" y="232" width="260" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="540" y="252" text-anchor="middle" dominant-baseline="central">Escolhe tipo de conta</text>
+  <text class="ts" x="540" y="270" text-anchor="middle" dominant-baseline="central">Comprador / Vendedor / Agente</text>
+</g>
+
+<line x1="540" y1="288" x2="540" y2="318" class="arr" marker-end="url(#a1)"/>
+
+<g class="node c-teal" onclick="sendPrompt('O que acontece ao registar no KuGava com um link de afiliado?')">
+  <rect x="410" y="318" width="260" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="540" y="338" text-anchor="middle" dominant-baseline="central">Verifica referral code</text>
+  <text class="ts" x="540" y="356" text-anchor="middle" dominant-baseline="central">AsyncStorage → aplica afiliado</text>
+</g>
+
+<line x1="410" y1="346" x2="230" y2="200" class="arr" marker-end="url(#a1)" stroke-dasharray="5 4" stroke="#639922" fill="none"/>
+<text class="ts" x="290" y="268" text-anchor="middle">Registo OK</text>
+
+<g class="node c-amber" onclick="sendPrompt('Como o KuGava guarda o push token para notificações?')">
+  <rect x="50" y="318" width="220" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="160" y="338" text-anchor="middle" dominant-baseline="central">Regista push token</text>
+  <text class="ts" x="160" y="356" text-anchor="middle" dominant-baseline="central">Expo Notifications → profiles</text>
+</g>
+<line x1="140" y1="202" x2="160" y2="318" class="arr" marker-end="url(#a1)" stroke-dasharray="5 4" stroke="#BA7517" fill="none"/>
+
+<rect x="30" y="390" width="10" height="10" rx="2" fill="#639922"/>
+<text class="ts" x="46" y="399">Autenticado</text>
+<rect x="130" y="390" width="10" height="10" rx="2" fill="#E24B4A"/>
+<text class="ts" x="146" y="399">Sem sessão</text>
+<rect x="230" y="390" width="10" height="10" rx="2" fill="#BA7517"/>
+<text class="ts" x="246" y="399">Acção automática</text>
+</svg>
+</div>
+
+<!-- COMPRADOR -->
+<div class="panel" id="p-comprador">
+<svg viewBox="0 0 680 500">
+<defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="node c-teal" onclick="sendPrompt('Como funciona o feed de imóveis do KuGava?')">
+  <rect x="240" y="20" width="200" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="40" text-anchor="middle" dominant-baseline="central">Home Feed</text>
+  <text class="ts" x="340" y="58" text-anchor="middle" dominant-baseline="central">Imóveis em destaque + filtros</text>
+</g>
+
+<line x1="200" y1="48" x2="90" y2="48" class="arr" marker-end="url(#a2)"/>
+<g class="node c-gray" onclick="sendPrompt('Como funciona a pesquisa de imóveis no KuGava?')">
+  <rect x="30" y="26" width="140" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="100" y="43" text-anchor="middle" dominant-baseline="central">Pesquisa</text>
+  <text class="ts" x="100" y="59" text-anchor="middle" dominant-baseline="central">Filtros: tipo, cidade, preço</text>
+</g>
+
+<line x1="100" y1="70" x2="100" y2="108" class="arr" marker-end="url(#a2)" stroke-dasharray="4 3" fill="none" stroke="#888780"/>
+<line x1="200" y1="70" x2="100" y2="108" class="arr" marker-end="url(#a2)" fill="none"/>
+<line x1="340" y1="76" x2="340" y2="108" class="arr" marker-end="url(#a2)"/>
+
+<g class="node c-blue" onclick="sendPrompt('Como funciona a página de detalhe de um imóvel no KuGava?')">
+  <rect x="220" y="108" width="240" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="128" text-anchor="middle" dominant-baseline="central">Detalhe do imóvel</text>
+  <text class="ts" x="340" y="146" text-anchor="middle" dominant-baseline="central">Fotos, stats, agente, preço</text>
+</g>
+
+<line x1="300" y1="164" x2="200" y2="206" class="arr" marker-end="url(#a2)"/>
+<line x1="380" y1="164" x2="480" y2="206" class="arr" marker-end="url(#a2)"/>
+
+<text class="ts" x="220" y="198">Contactar</text>
+<text class="ts" x="460" y="198">Agendar</text>
+
+<g class="node c-purple" onclick="sendPrompt('Como funciona o chat entre comprador e vendedor no KuGava?')">
+  <rect x="60" y="206" width="240" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="180" y="226" text-anchor="middle" dominant-baseline="central">Abrir chat</text>
+  <text class="ts" x="180" y="244" text-anchor="middle" dominant-baseline="central">getOrCreateConversation()</text>
+</g>
+
+<g class="node c-amber" onclick="sendPrompt('Como funciona o agendamento de visitas no KuGava?')">
+  <rect x="380" y="206" width="240" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="500" y="226" text-anchor="middle" dominant-baseline="central">Agendar visita</text>
+  <text class="ts" x="500" y="244" text-anchor="middle" dominant-baseline="central">Calendário + horários</text>
+</g>
+
+<line x1="180" y1="262" x2="180" y2="302" class="arr" marker-end="url(#a2)"/>
+<line x1="500" y1="262" x2="500" y2="302" class="arr" marker-end="url(#a2)"/>
+
+<g class="node c-purple" onclick="sendPrompt('Como funciona o chat em tempo real no KuGava com Supabase?')">
+  <rect x="60" y="302" width="240" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="180" y="322" text-anchor="middle" dominant-baseline="central">Chat em tempo real</text>
+  <text class="ts" x="180" y="340" text-anchor="middle" dominant-baseline="central">Supabase Realtime</text>
+</g>
+
+<g class="node c-amber" onclick="sendPrompt('O que acontece depois de confirmar uma visita no KuGava?')">
+  <rect x="380" y="302" width="240" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="500" y="322" text-anchor="middle" dominant-baseline="central">Confirmar agendamento</text>
+  <text class="ts" x="500" y="340" text-anchor="middle" dominant-baseline="central">Notificação push enviada</text>
+</g>
+
+<line x1="300" y1="330" x2="380" y2="330" class="arr" marker-end="url(#a2)" stroke-dasharray="5 4" stroke="#BA7517" fill="none"/>
+
+<line x1="500" y1="358" x2="500" y2="398" class="arr" marker-end="url(#a2)"/>
+<line x1="180" y1="358" x2="340" y2="398" class="arr" marker-end="url(#a2)"/>
+
+<g class="node c-green" onclick="sendPrompt('Como é que o negócio é fechado no KuGava?')">
+  <rect x="220" y="398" width="240" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="418" text-anchor="middle" dominant-baseline="central">Negócio fechado</text>
+  <text class="ts" x="340" y="436" text-anchor="middle" dominant-baseline="central">Comissão calculada → afiliado</text>
+</g>
+</svg>
+</div>
+
+<!-- VENDEDOR -->
+<div class="panel" id="p-vendedor">
+<svg viewBox="0 0 680 430">
+<defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="node c-coral" onclick="sendPrompt('Como um vendedor publica um imóvel no KuGava?')">
+  <rect x="240" y="20" width="200" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="42" text-anchor="middle" dominant-baseline="central">Criar novo anúncio</text>
+</g>
+<line x1="340" y1="64" x2="340" y2="94" class="arr" marker-end="url(#a3)"/>
+
+<g class="node c-blue">
+  <rect x="30" y="94" width="180" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="120" y="114" text-anchor="middle" dominant-baseline="central">Passo 1 — Básico</text>
+  <text class="ts" x="120" y="132" text-anchor="middle" dominant-baseline="central">Tipo, transacção, título</text>
+</g>
+<g class="node c-blue">
+  <rect x="250" y="94" width="180" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="114" text-anchor="middle" dominant-baseline="central">Passo 2 — Detalhes</text>
+  <text class="ts" x="340" y="132" text-anchor="middle" dominant-baseline="central">Zona, m², quartos, WC</text>
+</g>
+<g class="node c-blue">
+  <rect x="470" y="94" width="180" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="560" y="114" text-anchor="middle" dominant-baseline="central">Passo 3 — Fotos</text>
+  <text class="ts" x="560" y="132" text-anchor="middle" dominant-baseline="central">Até 6 imagens</text>
+</g>
+
+<line x1="210" y1="122" x2="250" y2="122" class="arr" marker-end="url(#a3)"/>
+<line x1="430" y1="122" x2="470" y2="122" class="arr" marker-end="url(#a3)"/>
+
+<line x1="560" y1="150" x2="560" y2="190" class="arr" marker-end="url(#a3)"/>
+
+<g class="node c-teal" onclick="sendPrompt('Como funciona o upload de imagens no KuGava?')">
+  <rect x="420" y="190" width="220" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="530" y="210" text-anchor="middle" dominant-baseline="central">Upload → Supabase Storage</text>
+  <text class="ts" x="530" y="228" text-anchor="middle" dominant-baseline="central">bucket: properties/ → public URL</text>
+</g>
+
+<line x1="530" y1="246" x2="530" y2="286" class="arr" marker-end="url(#a3)"/>
+<line x1="420" y1="218" x2="300" y2="286" class="arr" marker-end="url(#a3)"/>
+
+<g class="node c-green" onclick="sendPrompt('O que acontece quando um imóvel é publicado no KuGava?')">
+  <rect x="200" y="286" width="260" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="330" y="306" text-anchor="middle" dominant-baseline="central">Imóvel publicado</text>
+  <text class="ts" x="330" y="324" text-anchor="middle" dominant-baseline="central">status: active → aparece no feed</text>
+</g>
+
+<line x1="250" y1="342" x2="140" y2="382" class="arr" marker-end="url(#a3)"/>
+<line x1="380" y1="342" x2="480" y2="382" class="arr" marker-end="url(#a3)"/>
+
+<g class="node c-amber" onclick="sendPrompt('Como o vendedor recebe contactos dos compradores no KuGava?')">
+  <rect x="30" y="382" width="200" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="130" y="399" text-anchor="middle" dominant-baseline="central">Recebe mensagens</text>
+  <text class="ts" x="130" y="415" text-anchor="middle" dominant-baseline="central">Chat em tempo real</text>
+</g>
+
+<g class="node c-amber" onclick="sendPrompt('Como o vendedor gere os agendamentos de visitas no KuGava?')">
+  <rect x="400" y="382" width="200" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="500" y="399" text-anchor="middle" dominant-baseline="central">Confirma visitas</text>
+  <text class="ts" x="500" y="415" text-anchor="middle" dominant-baseline="central">Notificação ao comprador</text>
+</g>
+</svg>
+</div>
+
+<!-- CHAT & AGENDA -->
+<div class="panel" id="p-chat">
+<svg viewBox="0 0 680 460">
+<defs><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="node c-gray"><rect x="30" y="20" width="120" height="44" rx="8" stroke-width="0.5"/><text class="th" x="90" y="42" text-anchor="middle" dominant-baseline="central">Comprador</text></g>
+<g class="node c-gray"><rect x="530" y="20" width="120" height="44" rx="8" stroke-width="0.5"/><text class="th" x="590" y="42" text-anchor="middle" dominant-baseline="central">Vendedor</text></g>
+
+<g class="node c-purple" onclick="sendPrompt('Como o Supabase Realtime funciona no chat do KuGava?')">
+  <rect x="200" y="20" width="280" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="37" text-anchor="middle" dominant-baseline="central">Supabase Realtime Channel</text>
+  <text class="ts" x="340" y="53" text-anchor="middle" dominant-baseline="central">conversations:id + messages:id</text>
+</g>
+
+<line x1="150" y1="42" x2="200" y2="42" class="arr" marker-end="url(#a4)"/>
+<line x1="530" y1="42" x2="480" y2="42" class="arr" marker-end="url(#a4)"/>
+
+<line x1="340" y1="64" x2="340" y2="104" class="arr" marker-end="url(#a4)"/>
+
+<g class="node c-blue" onclick="sendPrompt('O que guarda a tabela messages no Supabase do KuGava?')">
+  <rect x="180" y="104" width="320" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="124" text-anchor="middle" dominant-baseline="central">sendMessage()</text>
+  <text class="ts" x="340" y="142" text-anchor="middle" dominant-baseline="central">conversation_id, sender_id, content, type</text>
+</g>
+
+<line x1="260" y1="160" x2="160" y2="200" class="arr" marker-end="url(#a4)"/>
+<line x1="420" y1="160" x2="520" y2="200" class="arr" marker-end="url(#a4)"/>
+
+<g class="node c-teal" onclick="sendPrompt('O que é o tipo booking numa mensagem de chat do KuGava?')">
+  <rect x="30" y="200" width="230" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="145" y="220" text-anchor="middle" dominant-baseline="central">type: text</text>
+  <text class="ts" x="145" y="238" text-anchor="middle" dominant-baseline="central">Mensagem normal</text>
+</g>
+
+<g class="node c-amber" onclick="sendPrompt('Como funciona a mensagem de agendamento no chat do KuGava?')">
+  <rect x="420" y="200" width="230" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="535" y="220" text-anchor="middle" dominant-baseline="central">type: booking</text>
+  <text class="ts" x="535" y="238" text-anchor="middle" dominant-baseline="central">Card de visita no chat</text>
+</g>
+
+<line x1="340" y1="160" x2="340" y2="290" class="arr" marker-end="url(#a4)" stroke-dasharray="5 4" stroke="#7F77DD" fill="none"/>
+
+<g class="node c-purple" onclick="sendPrompt('Como funciona o sistema de agendamento de visitas no KuGava?')">
+  <rect x="180" y="290" width="320" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="310" text-anchor="middle" dominant-baseline="central">BookingScreen</text>
+  <text class="ts" x="340" y="328" text-anchor="middle" dominant-baseline="central">Dia + slot → createBooking()</text>
+</g>
+
+<line x1="340" y1="346" x2="340" y2="386" class="arr" marker-end="url(#a4)"/>
+
+<g class="node c-green" onclick="sendPrompt('Que notificações são enviadas após um agendamento no KuGava?')">
+  <rect x="180" y="386" width="320" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="406" text-anchor="middle" dominant-baseline="central">Notificações push</text>
+  <text class="ts" x="340" y="424" text-anchor="middle" dominant-baseline="central">Comprador e Vendedor notificados</text>
+</g>
+
+<line x1="180" y1="414" x2="90" y2="414" class="arr" marker-end="url(#a4)" stroke="#639922"/>
+<line x1="500" y1="414" x2="590" y2="414" class="arr" marker-end="url(#a4)" stroke="#639922"/>
+<line x1="90" y1="414" x2="90" y2="42" class="arr" marker-end="url(#a4)" stroke="#639922" fill="none" stroke-dasharray="5 4"/>
+<line x1="590" y1="414" x2="590" y2="64" class="arr" marker-end="url(#a4)" stroke="#639922" fill="none" stroke-dasharray="5 4"/>
+</svg>
+</div>
+
+<!-- AFILIADOS -->
+<div class="panel" id="p-afiliado">
+<svg viewBox="0 0 680 500">
+<defs><marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="node c-amber" onclick="sendPrompt('Como um utilizador se torna afiliado no KuGava?')">
+  <rect x="220" y="20" width="240" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="40" text-anchor="middle" dominant-baseline="central">Utilizador regista-se</text>
+  <text class="ts" x="340" y="58" text-anchor="middle" dominant-baseline="central">getOrCreateAffiliate() → código KG...</text>
+</g>
+
+<line x1="220" y1="48" x2="80" y2="108" class="arr" marker-end="url(#a5)"/>
+<line x1="460" y1="48" x2="600" y2="108" class="arr" marker-end="url(#a5)"/>
+
+<text class="ts" x="110" y="98">Modelo A</text>
+<text class="ts" x="570" y="98">Modelo B</text>
+
+<g class="node c-purple" onclick="sendPrompt('Como funciona o modelo A de afiliados com agentes no KuGava?')">
+  <rect x="20" y="108" width="220" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="130" y="128" text-anchor="middle" dominant-baseline="central">Agente profissional</text>
+  <text class="ts" x="130" y="146" text-anchor="middle" dominant-baseline="central">Dashboard + links rastreáveis</text>
+</g>
+
+<g class="node c-teal" onclick="sendPrompt('Como funciona o modelo B de afiliados com utilizadores comuns no KuGava?')">
+  <rect x="440" y="108" width="220" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="550" y="128" text-anchor="middle" dominant-baseline="central">Utilizador comum</text>
+  <text class="ts" x="550" y="146" text-anchor="middle" dominant-baseline="central">Partilha link via Share()</text>
+</g>
+
+<line x1="130" y1="164" x2="130" y2="214" class="arr" marker-end="url(#a5)"/>
+<line x1="550" y1="164" x2="550" y2="214" class="arr" marker-end="url(#a5)"/>
+
+<g class="node c-blue" onclick="sendPrompt('Como o KuGava rastreia os deep links de afiliados?')">
+  <rect x="20" y="214" width="220" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="130" y="234" text-anchor="middle" dominant-baseline="central">Comprador clica no link</text>
+  <text class="ts" x="130" y="252" text-anchor="middle" dominant-baseline="central">kugava.mz/ref/CODIGO</text>
+</g>
+
+<g class="node c-blue" onclick="sendPrompt('Como o KuGava rastreia os deep links de afiliados?')">
+  <rect x="440" y="214" width="220" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="550" y="234" text-anchor="middle" dominant-baseline="central">Novo utilizador clica link</text>
+  <text class="ts" x="550" y="252" text-anchor="middle" dominant-baseline="central">kugava.mz/ref/CODIGO</text>
+</g>
+
+<line x1="130" y1="270" x2="280" y2="320" class="arr" marker-end="url(#a5)"/>
+<line x1="550" y1="270" x2="400" y2="320" class="arr" marker-end="url(#a5)"/>
+
+<g class="node c-gray" onclick="sendPrompt('Como o código de referral é guardado no KuGava?')">
+  <rect x="200" y="320" width="280" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="340" text-anchor="middle" dominant-baseline="central">Código guardado</text>
+  <text class="ts" x="340" y="358" text-anchor="middle" dominant-baseline="central">AsyncStorage → aplica no registo</text>
+</g>
+
+<line x1="340" y1="376" x2="340" y2="416" class="arr" marker-end="url(#a5)"/>
+
+<g class="node c-green" onclick="sendPrompt('Como são calculadas as comissões no sistema de afiliados do KuGava?')">
+  <rect x="140" y="416" width="400" height="64" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="436" text-anchor="middle" dominant-baseline="central">Cálculo de comissão</text>
+  <text class="ts" x="340" y="454" text-anchor="middle" dominant-baseline="central">Agente: 2% do negócio fechado</text>
+  <text class="ts" x="340" y="468" text-anchor="middle" dominant-baseline="central">Utilizador: 0.5% ou 500 MZN (o maior)</text>
+</g>
+
+<rect x="30" y="488" width="10" height="10" rx="2" fill="#534AB7"/>
+<text class="ts" x="46" y="497">Modelo A · Agente</text>
+<rect x="180" y="488" width="10" height="10" rx="2" fill="#1D9E75"/>
+<text class="ts" x="196" y="497">Modelo B · Utilizador</text>
+<rect x="330" y="488" width="10" height="10" rx="2" fill="#639922"/>
+<text class="ts" x="346" y="497">Conversão → comissão</text>
+</svg>
+</div>
+
+<!-- DADOS -->
+<div class="panel" id="p-dados">
+<svg viewBox="0 0 680 440">
+<defs><marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="node c-gray">
+  <rect x="240" y="20" width="200" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="42" text-anchor="middle" dominant-baseline="central">React Native App</text>
+</g>
+
+<line x1="340" y1="64" x2="340" y2="104" class="arr" marker-end="url(#a6)"/>
+
+<g class="node c-blue" onclick="sendPrompt('Como os serviços do KuGava comunicam com o Supabase?')">
+  <rect x="180" y="104" width="320" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="121" text-anchor="middle" dominant-baseline="central">Services (authService, propertiesService...)</text>
+  <text class="ts" x="340" y="137" text-anchor="middle" dominant-baseline="central">Zustand stores → UI</text>
+</g>
+
+<line x1="340" y1="148" x2="340" y2="188" class="arr" marker-end="url(#a6)"/>
+
+<g class="node c-teal" onclick="sendPrompt('O que é o Supabase e como é usado no KuGava?')">
+  <rect x="180" y="188" width="320" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="210" text-anchor="middle" dominant-baseline="central">Supabase</text>
+</g>
+
+<line x1="240" y1="232" x2="100" y2="272" class="arr" marker-end="url(#a6)"/>
+<line x1="310" y1="232" x2="280" y2="272" class="arr" marker-end="url(#a6)"/>
+<line x1="370" y1="232" x2="400" y2="272" class="arr" marker-end="url(#a6)"/>
+<line x1="440" y1="232" x2="580" y2="272" class="arr" marker-end="url(#a6)"/>
+
+<g class="node c-teal"><rect x="30" y="272" width="130" height="44" rx="8" stroke-width="0.5"/><text class="th" x="95" y="289" text-anchor="middle" dominant-baseline="central">Auth</text><text class="ts" x="95" y="305" text-anchor="middle" dominant-baseline="central">JWT + RLS</text></g>
+<g class="node c-teal"><rect x="180" y="272" width="130" height="44" rx="8" stroke-width="0.5"/><text class="th" x="245" y="289" text-anchor="middle" dominant-baseline="central">PostgreSQL</text><text class="ts" x="245" y="305" text-anchor="middle" dominant-baseline="central">7 tabelas</text></g>
+<g class="node c-teal"><rect x="330" y="272" width="130" height="44" rx="8" stroke-width="0.5"/><text class="th" x="395" y="289" text-anchor="middle" dominant-baseline="central">Storage</text><text class="ts" x="395" y="305" text-anchor="middle" dominant-baseline="central">Fotos imóveis</text></g>
+<g class="node c-teal"><rect x="480" y="272" width="170" height="44" rx="8" stroke-width="0.5"/><text class="th" x="565" y="289" text-anchor="middle" dominant-baseline="central">Realtime</text><text class="ts" x="565" y="305" text-anchor="middle" dominant-baseline="central">messages + convos</text></g>
+
+<line x1="245" y1="316" x2="245" y2="356" class="arr" marker-end="url(#a6)"/>
+
+<g class="node c-gray" onclick="sendPrompt('Quais são as 7 tabelas do banco de dados do KuGava?')">
+  <rect x="60" y="356" width="520" height="64" rx="8" stroke-width="0.5"/>
+  <text class="th" x="320" y="376" text-anchor="middle" dominant-baseline="central">Tabelas: profiles · properties · conversations</text>
+  <text class="ts" x="320" y="394" text-anchor="middle" dominant-baseline="central">messages · bookings · affiliates · referrals</text>
+  <text class="ts" x="320" y="410" text-anchor="middle" dominant-baseline="central">RLS activo em todas as tabelas</text>
+</g>
+</svg>
+</div>
+
+<!-- RECEITA -->
+<div class="panel" id="p-receita">
+<svg viewBox="0 0 680 400">
+<defs><marker id="a7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<g class="node c-green" onclick="sendPrompt('Como o KuGava ganha dinheiro? Explica todas as fontes de receita.')">
+  <rect x="220" y="20" width="240" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="42" text-anchor="middle" dominant-baseline="central">Modelo de receita KuGava</text>
+</g>
+
+<line x1="340" y1="64" x2="120" y2="114" class="arr" marker-end="url(#a7)"/>
+<line x1="340" y1="64" x2="270" y2="114" class="arr" marker-end="url(#a7)"/>
+<line x1="340" y1="64" x2="420" y2="114" class="arr" marker-end="url(#a7)"/>
+<line x1="340" y1="64" x2="570" y2="114" class="arr" marker-end="url(#a7)"/>
+
+<g class="node c-green" onclick="sendPrompt('Como funciona a comissão por negócio fechado no KuGava?')">
+  <rect x="20" y="114" width="200" height="72" rx="8" stroke-width="0.5"/>
+  <text class="th" x="120" y="136" text-anchor="middle" dominant-baseline="central">Comissão</text>
+  <text class="ts" x="120" y="154" text-anchor="middle" dominant-baseline="central">% do negócio fechado</text>
+  <text class="ts" x="120" y="170" text-anchor="middle" dominant-baseline="central">Fonte principal</text>
+</g>
+
+<g class="node c-green" onclick="sendPrompt('Como funciona o anúncio destacado pago no KuGava?')">
+  <rect x="240" y="114" width="200" height="72" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="136" text-anchor="middle" dominant-baseline="central">Destaque pago</text>
+  <text class="ts" x="340" y="154" text-anchor="middle" dominant-baseline="central">Vendedor paga boost</text>
+  <text class="ts" x="340" y="170" text-anchor="middle" dominant-baseline="central">Aparecer no topo</text>
+</g>
+
+<g class="node c-green" onclick="sendPrompt('Como funciona a subscrição premium para agentes no KuGava?')">
+  <rect x="460" y="114" width="200" height="72" rx="8" stroke-width="0.5"/>
+  <text class="th" x="560" y="136" text-anchor="middle" dominant-baseline="central">Subscrição agente</text>
+  <text class="ts" x="560" y="154" text-anchor="middle" dominant-baseline="central">Plano mensal PRO</text>
+  <text class="ts" x="560" y="170" text-anchor="middle" dominant-baseline="central">Mais visibilidade</text>
+</g>
+
+<line x1="120" y1="186" x2="340" y2="236" class="arr" marker-end="url(#a7)"/>
+<line x1="340" y1="186" x2="340" y2="236" class="arr" marker-end="url(#a7)"/>
+<line x1="560" y1="186" x2="340" y2="236" class="arr" marker-end="url(#a7)"/>
+
+<g class="node c-amber" onclick="sendPrompt('Como o KuGava distribui as comissões entre plataforma e afiliados?')">
+  <rect x="160" y="236" width="360" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="256" text-anchor="middle" dominant-baseline="central">Plataforma retém % dos afiliados</text>
+  <text class="ts" x="340" y="274" text-anchor="middle" dominant-baseline="central">process-referral-commission (Edge Function)</text>
+</g>
+
+<line x1="340" y1="292" x2="340" y2="332" class="arr" marker-end="url(#a7)"/>
+
+<g class="node c-gray" onclick="sendPrompt('Como evoluem os níveis dos afiliados no KuGava e que vantagens trazem?')">
+  <rect x="100" y="332" width="480" height="56" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="352" text-anchor="middle" dominant-baseline="central">Níveis de afiliado incentivam crescimento</text>
+  <text class="ts" x="340" y="370" text-anchor="middle" dominant-baseline="central">Bronze → Prata → Ouro → Platina · mais conversões = mais %</text>
+</g>
+</svg>
+</div>
+
+</div>
+<script>
+function show(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('on');
+  event.target.classList.add('on');
+}
+</script>

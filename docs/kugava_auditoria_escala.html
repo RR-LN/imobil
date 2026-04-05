@@ -1,0 +1,283 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:0 0 2rem;font-family:var(--font-sans)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:12px}
+.tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:var(--color-background-primary);transition:all .15s}
+.tab.on{background:#1A1512;color:#FAF6EF;border-color:#1A1512}
+.panel{display:none}.panel.on{display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px}
+.card.danger{border-left:3px solid #E24B4A;border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0}
+.card.warn{border-left:3px solid #BA7517;border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0}
+.card.ok{border-left:3px solid #639922;border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0}
+.card.info{border-left:3px solid #378ADD;border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0}
+.tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-bottom:6px;letter-spacing:.06em}
+.tag.r{background:#FCEBEB;color:#A32D2D}
+.tag.y{background:#FAEEDA;color:#854F0B}
+.tag.g{background:#EAF3DE;color:#3B6D11}
+.tag.b{background:#E6F1FB;color:#185FA5}
+.title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.desc{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.fix{font-size:11px;color:var(--color-text-tertiary);margin-top:6px;padding-top:6px;border-top:0.5px solid var(--color-border-tertiary);line-height:1.5}
+.fix b{color:var(--color-text-secondary);font-weight:500}
+.metric-row{display:flex;gap:10px;margin-bottom:12px}
+.metric{flex:1;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;text-align:center}
+.metric-val{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.metric-lbl{font-size:10px;color:var(--color-text-secondary);margin-top:2px}
+.section-title{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-tertiary);margin:16px 0 8px}
+</style>
+
+<div class="wrap">
+<div class="tabs">
+  <div class="tab on" onclick="show('db')">Base de Dados</div>
+  <div class="tab" onclick="show('realtime')">Realtime</div>
+  <div class="tab" onclick="show('storage')">Storage</div>
+  <div class="tab" onclick="show('app')">App Mobile</div>
+  <div class="tab" onclick="show('seguranca')">Segurança</div>
+  <div class="tab" onclick="show('negocio')">Negócio</div>
+</div>
+
+<!-- BASE DE DADOS -->
+<div class="panel on" id="p-db">
+  <div class="metric-row">
+    <div class="metric"><div class="metric-val" style="color:#E24B4A">3</div><div class="metric-lbl">Críticos</div></div>
+    <div class="metric"><div class="metric-val" style="color:#BA7517">4</div><div class="metric-lbl">Importantes</div></div>
+    <div class="metric"><div class="metric-val" style="color:#639922">2</div><div class="metric-lbl">Já OK</div></div>
+  </div>
+
+  <div class="section-title">Crítico — vai quebrar com volume</div>
+  <div class="grid">
+    <div class="card danger">
+      <div class="tag r">CRÍTICO</div>
+      <div class="title">Sem índices nas tabelas</div>
+      <div class="desc">properties, messages e bookings não têm índices. Com 10k imóveis, cada pesquisa faz full table scan — latência de 2-8 segundos.</div>
+      <div class="fix"><b>Fix:</b> CREATE INDEX idx_properties_city ON properties(city); CREATE INDEX idx_properties_status ON properties(status); CREATE INDEX idx_messages_conv ON messages(conversation_id, created_at DESC);</div>
+    </div>
+    <div class="card danger">
+      <div class="tag r">CRÍTICO</div>
+      <div class="title">Pesquisa sem full-text search</div>
+      <div class="desc">searchProperties() usa LIKE '%query%' — não usa índices e é lento. Com 50k imóveis = 400ms+ por pesquisa.</div>
+      <div class="fix"><b>Fix:</b> Adicionar coluna search_vector tsvector, usar to_tsquery() e índice GIN. Ou activar pgvector para pesquisa semântica.</div>
+    </div>
+    <div class="card danger">
+      <div class="tag r">CRÍTICO</div>
+      <div class="title">Sem paginação real</div>
+      <div class="desc">getProperties() busca todos os registos. Com 5k imóveis = 15MB de JSON na memória do telefone.</div>
+      <div class="fix"><b>Fix:</b> Supabase .range(from, to) — cursor-based pagination. Carregar 20 imóveis por vez com FlatList onEndReached.</div>
+    </div>
+  </div>
+
+  <div class="section-title">Importante — degradação progressiva</div>
+  <div class="grid">
+    <div class="card warn">
+      <div class="tag y">IMPORTANTE</div>
+      <div class="title">N+1 queries no feed</div>
+      <div class="desc">HomeFeed busca imóveis, depois busca o agente de cada um separadamente. 20 imóveis = 21 queries.</div>
+      <div class="fix"><b>Fix:</b> JOIN com profiles na mesma query: .select('*, profiles(full_name, avatar_url)')</div>
+    </div>
+    <div class="card warn">
+      <div class="tag y">IMPORTANTE</div>
+      <div class="title">Sem cache local</div>
+      <div class="desc">Cada vez que o utilizador volta ao feed, faz nova chamada à API. Consome dados móveis e é lento em redes 3G (Moçambique).</div>
+      <div class="fix"><b>Fix:</b> react-query ou SWR para cache com stale-while-revalidate. Dados ficam 5 min em cache.</div>
+    </div>
+  </div>
+</div>
+
+<!-- REALTIME -->
+<div class="panel" id="p-realtime">
+  <div class="metric-row">
+    <div class="metric"><div class="metric-val" style="color:#E24B4A">200</div><div class="metric-lbl">Conexões simultâneas (plano free)</div></div>
+    <div class="metric"><div class="metric-val" style="color:#BA7517">~50</div><div class="metric-lbl">Utilizadores activos no chat</div></div>
+    <div class="metric"><div class="metric-val" style="color:#639922">∞</div><div class="metric-lbl">No plano Pro ($25/mês)</div></div>
+  </div>
+
+  <div class="section-title">Problema imediato</div>
+  <div class="card danger" style="margin-bottom:12px">
+    <div class="tag r">CRÍTICO</div>
+    <div class="title">Plano Supabase Free tem limite de 200 conexões Realtime</div>
+    <div class="desc">Com 10k utilizadores e apenas 2% activos ao mesmo tempo = 200 conexões simultâneas. Isso já satura o plano Free. Mensagens começam a falhar sem aviso.</div>
+    <div class="fix"><b>Fix imediato:</b> Migrar para Supabase Pro ($25/mês) antes do lançamento. Suporta conexões ilimitadas. Para 50k+ utilizadores considerar Supabase Enterprise ou self-hosted.</div>
+  </div>
+
+  <div class="section-title">Optimizações no código</div>
+  <div class="grid">
+    <div class="card warn">
+      <div class="tag y">IMPORTANTE</div>
+      <div class="title">Canal subscrito mas não limpo</div>
+      <div class="desc">Se o utilizador navega entre conversas rapidamente, cria múltiplos canais sem fazer unsubscribe dos anteriores. Memory leak + conexões fantasma.</div>
+      <div class="fix"><b>Fix:</b> Guardar referência do canal em useRef e garantir cleanup no useEffect return.</div>
+    </div>
+    <div class="card warn">
+      <div class="tag y">IMPORTANTE</div>
+      <div class="title">Subscrito a conversas globais</div>
+      <div class="desc">subscribeToConversations(userId) ouve TODAS as mudanças na tabela. Com 10k utilizadores e mensagens frequentes, muitos eventos irrelevantes chegam ao cliente.</div>
+      <div class="fix"><b>Fix:</b> Filtrar no servidor: filter: `buyer_id=eq.${userId},seller_id=eq.${userId}`</div>
+    </div>
+  </div>
+</div>
+
+<!-- STORAGE -->
+<div class="panel" id="p-storage">
+  <div class="metric-row">
+    <div class="metric"><div class="metric-val" style="color:#E24B4A">1GB</div><div class="metric-lbl">Limite plano Free</div></div>
+    <div class="metric"><div class="metric-val" style="color:#BA7517">~200KB</div><div class="metric-lbl">Foto típica de imóvel</div></div>
+    <div class="metric"><div class="metric-val" style="color:#639922">~5000</div><div class="metric-lbl">Fotos até esgotar 1GB</div></div>
+  </div>
+
+  <div class="section-title">Problemas de storage</div>
+  <div class="grid">
+    <div class="card danger">
+      <div class="tag r">CRÍTICO</div>
+      <div class="title">Sem compressão de imagens</div>
+      <div class="desc">expo-image-picker devolve imagens originais — podem ter 4-8MB cada. 6 fotos por imóvel × 1000 imóveis = 24-48GB. Esgota storage em dias.</div>
+      <div class="fix"><b>Fix:</b> Usar ImageManipulator do Expo antes do upload: comprimir para quality: 0.7 e resize para maxWidth: 1200. Reduz 80% do tamanho.</div>
+    </div>
+    <div class="card danger">
+      <div class="tag r">CRÍTICO</div>
+      <div class="title">Sem CDN para imagens</div>
+      <div class="desc">Imagens servidas directamente do Supabase Storage sem CDN. Utilizadores em Nampula ou Beira descarregam de servidores distantes — 3-8 segundos de loading.</div>
+      <div class="fix"><b>Fix:</b> Activar Supabase CDN (incluído no Pro) ou usar Cloudflare Images ($5/mês). URLs ficam com cache na edge próxima do utilizador.</div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="card warn">
+      <div class="tag y">IMPORTANTE</div>
+      <div class="title">Sem thumbnails automáticos</div>
+      <div class="desc">O feed carrega a imagem original (1-4MB) para mostrar num card de 120px. Desperdício de dados móveis — crítico em Moçambique com planos de dados caros.</div>
+      <div class="fix"><b>Fix:</b> Supabase Image Transformations: adicionar ?width=300&quality=60 à URL. Gera thumbnail on-the-fly.</div>
+    </div>
+    <div class="card ok">
+      <div class="tag g">JÁ OK</div>
+      <div class="title">Bucket separado por tipo</div>
+      <div class="desc">Estrutura properties/ já separada. Boa base para gerir permissões e limpeza por tipo de conteúdo.</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP MOBILE -->
+<div class="panel" id="p-app">
+  <div class="section-title">Performance no dispositivo</div>
+  <div class="grid">
+    <div class="card danger">
+      <div class="tag r">CRÍTICO</div>
+      <div class="title">FlatList sem optimização</div>
+      <div class="desc">HomeFeed renderiza todos os cards sem getItemLayout, windowSize ou maxToRenderPerBatch. Em dispositivos Android de gama baixa (maioria em Moçambique), a scroll fica aos saltos.</div>
+      <div class="fix"><b>Fix:</b> Adicionar getItemLayout (altura fixa por item), windowSize={5}, maxToRenderPerBatch={5}, removeClippedSubviews={true}.</div>
+    </div>
+    <div class="card warn">
+      <div class="tag y">IMPORTANTE</div>
+      <div class="title">Imagens sem lazy loading</div>
+      <div class="desc">Image nativo do React Native não tem cache persistente. Cada vez que o utilizador volta ao feed, as imagens descarregam novamente.</div>
+      <div class="fix"><b>Fix:</b> Instalar expo-image (substituto moderno com cache automático e placeholders blur). 3 linhas de mudança.</div>
+    </div>
+    <div class="card warn">
+      <div class="tag y">IMPORTANTE</div>
+      <div class="title">Bundle size sem optimização</div>
+      <div class="desc">Sem tree-shaking configurado, o bundle inclui código não usado. Tempo de arranque mais lento, especialmente em Android.</div>
+      <div class="fix"><b>Fix:</b> Activar Hermes engine no app.json (já disponível no Expo). Reduz bundle e melhora 30-50% o tempo de arranque.</div>
+    </div>
+    <div class="card ok">
+      <div class="tag g">JÁ OK</div>
+      <div class="title">Zustand para state</div>
+      <div class="desc">Zustand é leve e não causa re-renders desnecessários. Boa escolha para escala. Sem problemas aqui.</div>
+    </div>
+  </div>
+
+  <div class="section-title">Offline & conectividade</div>
+  <div class="card info" style="margin-bottom:12px">
+    <div class="tag b">MELHORAR</div>
+    <div class="title">Sem suporte offline</div>
+    <div class="desc">Em Moçambique a internet é instável. Se o utilizador perde conexão, a app fica em branco ou mostra erros sem feedback. Para 10k+ utilizadores com redes 2G/3G, isso é um problema real.</div>
+    <div class="fix"><b>Fix progressivo:</b> 1. Detectar NetInfo e mostrar banner "Sem internet". 2. Guardar últimos imóveis vistos no AsyncStorage. 3. Queue de mensagens offline que enviam quando a conexão volta.</div>
+  </div>
+</div>
+
+<!-- SEGURANÇA -->
+<div class="panel" id="p-seguranca">
+  <div class="section-title">Vulnerabilidades actuais</div>
+  <div class="grid">
+    <div class="card danger">
+      <div class="tag r">CRÍTICO</div>
+      <div class="title">RLS policies incompletas</div>
+      <div class="desc">Se as policies não cobrem todos os casos, qualquer utilizador autenticado pode ler mensagens de outros, ver dados de afiliados alheios ou modificar imóveis que não são seus.</div>
+      <div class="fix"><b>Fix:</b> Auditar cada tabela: profiles (só o próprio), properties (owner ou public se active), messages (só participantes da conversa), affiliates (só o próprio), bookings (comprador ou vendedor).</div>
+    </div>
+    <div class="card danger">
+      <div class="tag r">CRÍTICO</div>
+      <div class="title">Sem validação no servidor</div>
+      <div class="desc">createProperty() confia nos dados do cliente. Alguém pode publicar um imóvel com preço negativo, tipo inválido, ou injectar código no título/descrição.</div>
+      <div class="fix"><b>Fix:</b> Criar Edge Function validate-property com zod ou yup para validar antes de inserir. Nunca confiar no cliente para dados críticos.</div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="card warn">
+      <div class="tag y">IMPORTANTE</div>
+      <div class="title">Referral code previsível</div>
+      <div class="desc">Código gerado como 'KG' + nome + número random. Fácil de adivinhar e potencialmente manipulável para inflar comissões.</div>
+      <div class="fix"><b>Fix:</b> Gerar código no servidor (Edge Function) com crypto.randomUUID() truncado. Nunca no cliente.</div>
+    </div>
+    <div class="card warn">
+      <div class="tag y">IMPORTANTE</div>
+      <div class="title">Sem rate limiting</div>
+      <div class="desc">Sem limite de pedidos, alguém pode fazer 1000 registos falsos via link de afiliado para gerar bónus fraudulentos.</div>
+      <div class="fix"><b>Fix:</b> Activar Supabase Rate Limiting nas Edge Functions. Limite de 5 registos por IP por hora.</div>
+    </div>
+  </div>
+</div>
+
+<!-- NEGÓCIO -->
+<div class="panel" id="p-negocio">
+  <div class="section-title">O que falta para o produto ser competitivo</div>
+  <div class="grid3">
+    <div class="card info">
+      <div class="tag b">PRODUTO</div>
+      <div class="title">Verificação de imóveis</div>
+      <div class="desc">Sem verificação, qualquer um publica imóveis falsos ou duplicados. Destrói a confiança rapidamente.</div>
+      <div class="fix"><b>Fix:</b> Badge "Verificado" por agentes PRO. Reportar anúncio. Moderação manual dos primeiros 500.</div>
+    </div>
+    <div class="card info">
+      <div class="tag b">PRODUTO</div>
+      <div class="title">Sem avaliações</div>
+      <div class="desc">Compradores não sabem se o agente é de confiança. Isso trava o primeiro contacto.</div>
+      <div class="fix"><b>Fix:</b> Rating de 1-5 estrelas após visita confirmada. Mostra média no perfil do agente.</div>
+    </div>
+    <div class="card info">
+      <div class="tag b">PRODUTO</div>
+      <div class="title">Sem mapa</div>
+      <div class="desc">Utilizadores querem ver imóveis num mapa, não só numa lista. Feature mais pedida em marketplaces imobiliários.</div>
+      <div class="fix"><b>Fix v1.1:</b> react-native-maps com pins de imóveis. Filtro por raio de distância.</div>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="card warn">
+      <div class="tag y">ESCALA</div>
+      <div class="title">Analytics em falta</div>
+      <div class="desc">Sem dados, não sabes o que funciona. Qual imóvel tem mais cliques? Qual cidade converte mais?</div>
+      <div class="fix"><b>Fix:</b> Mixpanel free tier ou PostHog self-hosted. Eventos: view_property, start_chat, book_visit, share_referral.</div>
+    </div>
+    <div class="card warn">
+      <div class="tag y">ESCALA</div>
+      <div class="title">Sem suporte ao utilizador</div>
+      <div class="desc">Com 10k utilizadores vão surgir disputas, fraudes e problemas técnicos. Sem canal de suporte = reviews negativas na Play Store.</div>
+      <div class="fix"><b>Fix:</b> Botão "Reportar problema" no perfil → formulário → email. Intercom free tier para chat de suporte.</div>
+    </div>
+    <div class="card ok">
+      <div class="tag g">BOA BASE</div>
+      <div class="title">Sistema de afiliados</div>
+      <div class="desc">A lógica de comissões e níveis já está bem pensada. É o diferencial competitivo mais forte do KuGava no mercado moçambicano.</div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+function show(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('on');
+  event.target.classList.add('on');
+}
+</script>

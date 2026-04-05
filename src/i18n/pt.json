@@ -1,0 +1,121 @@
+{
+  "app": {
+    "name": "Kugava",
+    "tagline": "Imobiliária de Luxo"
+  },
+  "auth": {
+    "login": "Entrar",
+    "register": "Registar",
+    "email": "Email",
+    "password": "Palavra-passe",
+    "forgotPassword": "Esqueceu a palavra-passe?",
+    "noAccount": "Não tem conta?",
+    "hasAccount": "Já tem conta?",
+    "signIn": "Entrar",
+    "signUp": "Registar",
+    "fullName": "Nome Completo",
+    "phone": "Número de Telefone",
+    "referralCode": "Código de Referência (opcional)",
+    "confirmPassword": "Confirmar Palavra-passe",
+    "biometricLogin": "Entrar com Biometria",
+    "biometricNotAvailable": "Biometria não disponível"
+  },
+  "home": {
+    "title": "Descubra Imóveis",
+    "featured": "Destaques",
+    "search": "Pesquisar",
+    "searchPlaceholder": "Pesquisar por cidade, tipo...",
+    "filters": "Filtros",
+    "viewMap": "Ver Mapa",
+    "noResults": "Nenhum imóvel encontrado",
+    "loading": "A carregar..."
+  },
+  "filters": {
+    "title": "Filtros de Pesquisa",
+    "basic": "Básico",
+    "advanced": "Avançado",
+    "propertyType": "Tipo de Imóvel",
+    "transaction": "Transação",
+    "priceRange": "Faixa de Preço",
+    "bedrooms": "Quartos",
+    "bathrooms": "Casas de Banho",
+    "area": "Área (m²)",
+    "city": "Cidade",
+    "sortBy": "Ordenar Por",
+    "newest": "Mais Recentes",
+    "oldest": "Mais Antigos",
+    "priceLow": "Preço: Menor para Maior",
+    "priceHigh": "Preço: Maior para Menor",
+    "any": "Qualquer",
+    "sale": "Venda",
+    "rent": "Arrendamento",
+    "house": "Casa",
+    "apartment": "Apartamento",
+    "land": "Terreno",
+    "apply": "Aplicar Filtros",
+    "clear": "Limpar",
+    "min": "Mín",
+    "max": "Máx"
+  },
+  "property": {
+    "details": "Detalhes do Imóvel",
+    "description": "Descrição",
+    "location": "Localização",
+    "contact": "Contactar Agente",
+    "scheduleVisit": "Agendar Visita",
+    "bedrooms": "Quartos",
+    "bathrooms": "Casas de Banho",
+    "parking": "Estacionamento",
+    "area": "Área",
+    "features": "Características",
+    "gallery": "Galeria",
+    "uploadImage": "Carregar Imagem",
+    "share": "Partilhar"
+  },
+  "onboarding": {
+    "skip": "Pular",
+    "next": "Próximo",
+    "getStarted": "Começar",
+    "slide1Title": "Encontre a Casa dos Seus Sonhos",
+    "slide1Desc": "Explore imóveis de luxo em Moçambique com filtros de pesquisa avançados.",
+    "slide2Title": "Agende Visitas",
+    "slide2Desc": "Reserve visitas a imóveis directamente pela app com o seu agente preferido.",
+    "slide3Title": "Invista e Ganhe",
+    "slide3Desc": "Junte-se ao nosso programa de afiliados e ganhe comissões por indicações.",
+    "slide4Title": "Seguro e Privado",
+    "slide4Desc": "Entre de forma segura com autenticação biométrica."
+  },
+  "admin": {
+    "title": "Painel Administrativo",
+    "totalSales": "Total de Vendas",
+    "newLeads": "Novos Leads",
+    "occupancy": "Taxa de Ocupação",
+    "revenue": "Receita",
+    "recentTransactions": "Transações Recentes",
+    "monthlyEvolution": "Evolução Mensal",
+    "status": {
+      "completed": "Concluída",
+      "pending": "Pendente",
+      "cancelled": "Cancelada"
+    }
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Voltar",
+    "loading": "A carregar...",
+    "error": "Erro",
+    "retry": "Tentar Novamente",
+    "language": "Idioma",
+    "settings": "Definições",
+    "logout": "Sair"
+  },
+  "language": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "expo": {
+    "name": "KuGava",
+    "slug": "imobil",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0F0D0B"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0F0D0B"
+      },
+      "package": "com.imobil.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "name": "Imobil",
+      "shortName": "Imobil",
+      "description": "Marketplace de imóveis em Moçambique. Encontre, anuncie e compre casas, apartamentos e terrenos.",
+      "themeColor": "#D4563E",
+      "backgroundColor": "#0F0D0B",
+      "lang": "pt-MZ"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permite que o Imobil aceda às tuas fotos para publicar imóveis."
+        }
+      ],
+      [
+        "@sentry/react-native",
+        {
+          "organization": "your-org-name",
+          "project": "imobil-app"
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "react-native",
+          "organization": "rr-ln"
+        }
+      ]
+    ],
+    "extra": {
+      "supabaseUrl": "https://nzcdedegeahkejakkswe.supabase.co",
+      "sentry": {
+        "dsn": "EXPO_PUBLIC_SENTRY_DSN"
+      }
+    },
+    "jsEngine": "hermes"
+  }
+}

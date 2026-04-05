@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KuGava — Mobile Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --terra: #C4622D;
+    --terra-light: #E8835A;
+    --terra-dark: #8B3D16;
+    --ochre: #D4943A;
+    --forest: #2D5016;
+    --forest-mid: #3D6B20;
+    --forest-light: #5A8C35;
+    --cream: #FAF6EF;
+    --warm-white: #FDF9F4;
+    --charcoal: #1A1512;
+    --mid: #6B5E52;
+    --light-mid: #A89880;
+    --border: rgba(196, 98, 45, 0.12);
+    --shadow: 0 20px 60px rgba(26,21,18,0.14);
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Sora', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0F0D0B;
+    font-family: var(--font-body);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+    overflow-x: hidden;
+  }
+
+  /* Page header */
+  .page-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .page-header .logo {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 300;
+    color: #FAF6EF;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .page-header .logo span { color: var(--terra); }
+  .page-header .tagline {
+    font-size: 12px;
+    color: var(--light-mid);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* Screens grid */
+  .screens {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+
+  .screen-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    animation: rise 0.7s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .screen-wrap:nth-child(1) { animation-delay: 0.05s; }
+  .screen-wrap:nth-child(2) { animation-delay: 0.15s; }
+  .screen-wrap:nth-child(3) { animation-delay: 0.25s; }
+  .screen-wrap:nth-child(4) { animation-delay: 0.35s; }
+  .screen-wrap:nth-child(5) { animation-delay: 0.45s; }
+
+  @keyframes rise {
+    from { opacity:0; transform: translateY(28px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .screen-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--light-mid);
+  }
+
+  /* Phone frame */
+  .phone {
+    width: 220px;
+    height: 476px;
+    background: var(--warm-white);
+    border-radius: 36px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow), 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .phone-notch {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 72px; height: 22px;
+    background: var(--charcoal);
+    border-radius: 0 0 14px 14px;
+    z-index: 100;
+  }
+  .phone-content {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ===== SCREEN 1: HOME FEED ===== */
+  .s1 { background: var(--warm-white); }
+  .s1-header {
+    background: var(--charcoal);
+    padding: 32px 18px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .s1-header::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: var(--terra);
+    border-radius: 50%;
+    opacity: 0.18;
+  }
+  .s1-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .s1-logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--cream);
+    letter-spacing: -0.5px;
+  }
+  .s1-logo b { color: var(--terra); font-weight: 600; }
+  .s1-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--terra), var(--ochre));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: white; font-weight: 500;
+  }
+  .s1-greeting {
+    font-size: 10px; color: rgba(250,246,239,0.5);
+    letter-spacing: 0.05em; margin-bottom: 3px;
+  }
+  .s1-city {
+    font-size: 13px; color: var(--cream);
+    font-weight: 500;
+  }
+  .s1-city span { color: var(--terra-light); }
+  /* Search bar */
+  .s1-search {
+    margin: 12px 18px -18px;
+    position: relative;
+    z-index: 10;
+  }
+  .s1-search input {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 9px 14px 9px 34px;
+    font-size: 10px;
+    font-family: var(--font-body);
+    color: var(--charcoal);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    outline: none;
+  }
+  .s1-search::before {
+    content: '⌕';
+    position: absolute;
+    left: 11px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: var(--light-mid);
+    z-index: 1;
+  }
+  /* Filter pills */
+  .s1-filters {
+    display: flex; gap: 6px;
+    padding: 28px 18px 10px;
+    overflow-x: auto;
+  }
+  .s1-filters::-webkit-scrollbar { display: none; }
+  .pill {
+    flex-shrink: 0;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    color: var(--mid);
+    background: white;
+  }
+  .pill.active {
+    background: var(--terra);
+    color: white;
+    border-color: var(--terra);
+  }
+  /* Section label */
+  .s1-section {
+    padding: 0 18px 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .s1-section h3 {
+    font-size: 11px; font-weight: 600; color: var(--charcoal);
+    letter-spacing: 0.02em;
+  }
+  .s1-section a { font-size: 9px; color: var(--terra); }
+  /* Featured card */
+  .feat-card {
+    margin: 0 18px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--charcoal);
+    position: relative;
+    height: 118px;
+    flex-shrink: 0;
+  }
+  .feat-card-img {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #2D4A1E 0%, #3D6B20 40%, #8B3D16 100%);
+    position: relative;
+  }
+  .feat-card-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,21,18,0.85) 0%, transparent 60%);
+  }
+  .feat-card-geo {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    border-radius: 8px;
+    padding: 3px 7px;
+    font-size: 8px; color: white;
+    z-index: 2;
+  }
+  .feat-card-info {
+    position: absolute;
+    bottom: 10px; left: 12px; right: 12px;
+    z-index: 2;
+  }
+  .feat-card-price {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: white;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .feat-card-name {
+    font-size: 8px; color: rgba(255,255,255,0.65);
+    margin-top: 2px;
+  }
+  .feat-badge {
+    position: absolute;
+    top: 10px; left: 12px;
+    background: var(--terra);
+    border-radius: 6px;
+    padding: 3px 7px;
+    font-size: 7px; color: white; font-weight: 600;
+    letter-spacing: 0.06em;
+    z-index: 2;
+  }
+  /* Mini cards row */
+  .mini-row {
+    display: flex; gap: 10px;
+    padding: 10px 18px 0;
+  }
+  .mini-card {
+    flex: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #E8E0D5;
+    position: relative;
+  }
+  .mini-card-img {
+    height: 60px;
+    background: linear-gradient(135deg, #3D5C1E, #6B8C35);
+  }
+  .mini-card-img.v2 { background: linear-gradient(135deg, #8B4513, #C4622D); }
+  .mini-card-body { padding: 6px 8px; }
+  .mini-card-price { font-size: 9px; font-weight: 600; color: var(--charcoal); }
+  .mini-card-loc { font-size: 7px; color: var(--mid); }
+  /* Nav bar */
+  .nav-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 54px;
+    background: white;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-around;
+    padding-bottom: 6px;
+  }
+  .nav-item {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 3px;
+    font-size: 7px; color: var(--light-mid);
+  }
+  .nav-item.active { color: var(--terra); }
+  .nav-icon { width: 18px; height: 18px; }
+
+  /* ===== SCREEN 2: PROPERTY DETAIL ===== */
+  .s2 { background: var(--warm-white); }
+  .s2-hero {
+    height: 175px;
+    background: linear-gradient(160deg, #2D5016 0%, #5A8C35 45%, #C4622D 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .s2-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(26,21,18,0.6));
+  }
+  .s2-back {
+    position: absolute;
+    top: 30px; left: 14px;
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(6px);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 12px; z-index: 2;
+  }
+  .s2-heart {
+    position: absolute;
+    top: 30px; right: 14px;
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(6px);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 12px; z-index: 2;
+  }
+  .s2-img-dots {
+    position: absolute;
+    bottom: 10px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 4px; z-index: 2;
+  }
+  .s2-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.4); }
+  .s2-dot.active { background: white; width: 12px; border-radius: 2px; }
+  .s2-body { padding: 14px 16px; overflow: hidden; }
+  .s2-tag {
+    display: inline-block;
+    background: rgba(196,98,45,0.1);
+    color: var(--terra);
+    font-size: 8px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px;
+    margin-bottom: 6px;
+  }
+  .s2-title {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 400;
+    color: var(--charcoal);
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+  .s2-loc { font-size: 9px; color: var(--mid); margin-bottom: 10px; }
+  .s2-price-row {
+    display: flex; align-items: baseline; gap: 6px;
+    margin-bottom: 12px;
+  }
+  .s2-price {
+    font-family: var(--font-display);
+    font-size: 24px; font-weight: 600;
+    color: var(--terra);
+  }
+  .s2-price-label { font-size: 9px; color: var(--light-mid); }
+  /* Stats row */
+  .s2-stats {
+    display: flex; gap: 0;
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 10px 0;
+    margin-bottom: 12px;
+  }
+  .s2-stat {
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .s2-stat:last-child { border-right: none; }
+  .s2-stat-val { font-size: 13px; font-weight: 600; color: var(--charcoal); }
+  .s2-stat-key { font-size: 7px; color: var(--light-mid); margin-top: 2px; }
+  /* Agent row */
+  .s2-agent {
+    display: flex; align-items: center; gap: 8px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+  }
+  .s2-agent-av {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--forest), var(--forest-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: white; font-weight: 500; flex-shrink: 0;
+  }
+  .s2-agent-name { font-size: 9px; font-weight: 600; color: var(--charcoal); }
+  .s2-agent-role { font-size: 7px; color: var(--light-mid); }
+  .s2-agent-badge {
+    margin-left: auto;
+    background: rgba(45,80,22,0.1);
+    color: var(--forest);
+    font-size: 7px; font-weight: 600;
+    padding: 3px 7px; border-radius: 4px;
+  }
+  /* Buttons */
+  .s2-btns { display: flex; gap: 8px; }
+  .btn-prim {
+    flex: 1;
+    background: var(--terra);
+    color: white;
+    border: none; border-radius: 10px;
+    padding: 10px;
+    font-size: 9px; font-weight: 600;
+    font-family: var(--font-body);
+    letter-spacing: 0.06em;
+    cursor: pointer;
+  }
+  .btn-sec {
+    flex: 1;
+    background: white;
+    color: var(--charcoal);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px;
+    font-size: 9px; font-weight: 600;
+    font-family: var(--font-body);
+    letter-spacing: 0.06em;
+    cursor: pointer;
+  }
+
+  /* ===== SCREEN 3: CHAT ===== */
+  .s3 { background: var(--warm-white); }
+  .s3-header {
+    background: white;
+    padding: 30px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .s3-back { font-size: 14px; color: var(--charcoal); }
+  .s3-av {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--terra), var(--ochre));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: white; font-weight: 500;
+  }
+  .s3-info { flex: 1; }
+  .s3-name { font-size: 11px; font-weight: 600; color: var(--charcoal); }
+  .s3-status { font-size: 8px; color: var(--forest-light); }
+  .s3-prop {
+    background: var(--cream);
+    margin: 10px 14px;
+    border-radius: 10px;
+    padding: 8px 10px;
+    display: flex; gap: 8px; align-items: center;
+    border: 1px solid var(--border);
+  }
+  .s3-prop-thumb {
+    width: 34px; height: 34px; border-radius: 7px;
+    background: linear-gradient(135deg, var(--forest-mid), var(--terra-light));
+    flex-shrink: 0;
+  }
+  .s3-prop-title { font-size: 9px; font-weight: 600; color: var(--charcoal); }
+  .s3-prop-price { font-size: 8px; color: var(--terra); }
+  /* Messages */
+  .s3-msgs { padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .msg { max-width: 75%; }
+  .msg-r { align-self: flex-end; }
+  .msg-l { align-self: flex-start; }
+  .msg-bubble {
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 9px; line-height: 1.5;
+  }
+  .msg-r .msg-bubble { background: var(--terra); color: white; border-radius: 12px 12px 2px 12px; }
+  .msg-l .msg-bubble { background: white; color: var(--charcoal); border: 1px solid var(--border); border-radius: 12px 12px 12px 2px; }
+  .msg-time { font-size: 7px; color: var(--light-mid); margin-top: 3px; text-align: right; }
+  /* Schedule card in chat */
+  .sched-card {
+    margin: 4px 14px;
+    background: white;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--forest-light);
+    border-radius: 10px;
+    padding: 8px 10px;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .sched-icon { font-size: 16px; }
+  .sched-title { font-size: 9px; font-weight: 600; color: var(--charcoal); }
+  .sched-date { font-size: 8px; color: var(--mid); }
+  /* Input */
+  .s3-input-row {
+    position: absolute;
+    bottom: 8px; left: 0; right: 0;
+    padding: 0 14px;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .s3-input {
+    flex: 1;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 9px;
+    font-family: var(--font-body);
+    color: var(--mid);
+    outline: none;
+  }
+  .s3-send {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--terra);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 12px;
+  }
+
+  /* ===== SCREEN 4: AGENDAMENTO ===== */
+  .s4 { background: var(--warm-white); }
+  .s4-header {
+    background: var(--charcoal);
+    padding: 30px 16px 16px;
+    position: relative; overflow: hidden;
+  }
+  .s4-header::after {
+    content: '';
+    position: absolute;
+    bottom: -24px; right: -24px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: var(--terra); opacity: 0.15;
+  }
+  .s4-hback { font-size: 14px; color: rgba(250,246,239,0.6); margin-bottom: 10px; }
+  .s4-htitle { font-family: var(--font-display); font-size: 18px; font-weight: 400; color: var(--cream); }
+  .s4-hprop { font-size: 9px; color: rgba(250,246,239,0.5); margin-top: 2px; }
+  /* Calendar */
+  .s4-cal { padding: 14px 16px 0; }
+  .s4-cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .s4-cal-month { font-size: 11px; font-weight: 600; color: var(--charcoal); }
+  .s4-cal-nav { font-size: 12px; color: var(--mid); display: flex; gap: 10px; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .cal-day-label { font-size: 7px; color: var(--light-mid); font-weight: 500; padding: 2px 0; }
+  .cal-day {
+    font-size: 9px; color: var(--mid);
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; margin: 0 auto;
+    cursor: pointer;
+  }
+  .cal-day.active { background: var(--terra); color: white; font-weight: 600; }
+  .cal-day.available { color: var(--charcoal); font-weight: 500; }
+  .cal-day.today { border: 1px solid var(--terra); color: var(--terra); }
+  /* Time slots */
+  .s4-slots { padding: 12px 16px; }
+  .s4-slots-label { font-size: 9px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+  .slots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .slot {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 4px;
+    text-align: center;
+    font-size: 9px; color: var(--mid);
+    cursor: pointer;
+  }
+  .slot.active { background: rgba(196,98,45,0.08); border-color: var(--terra); color: var(--terra); font-weight: 600; }
+  .slot.taken { opacity: 0.35; }
+  /* Confirm */
+  .s4-confirm { padding: 12px 16px; }
+  .s4-agent-row {
+    display: flex; gap: 8px; align-items: center;
+    margin-bottom: 10px;
+  }
+  .s4-agent-av {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--forest), var(--forest-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: white; font-weight: 500;
+  }
+  .s4-agent-info { flex:1; }
+  .s4-agent-name { font-size: 9px; font-weight: 600; color: var(--charcoal); }
+  .s4-agent-sub { font-size: 7px; color: var(--mid); }
+  .btn-confirm {
+    width: 100%;
+    background: var(--charcoal);
+    color: white;
+    border: none; border-radius: 12px;
+    padding: 12px;
+    font-size: 10px; font-weight: 600;
+    font-family: var(--font-body);
+    letter-spacing: 0.05em;
+    cursor: pointer;
+  }
+
+  /* ===== SCREEN 5: PAINEL AFILIADO ===== */
+  .s5 { background: var(--charcoal); }
+  .s5-header { padding: 30px 16px 16px; }
+  .s5-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .s5-title { font-family: var(--font-display); font-size: 20px; font-weight: 400; color: var(--cream); line-height: 1.1; }
+  .s5-title span { display: block; color: var(--terra-light); }
+  .s5-level {
+    background: rgba(196,98,45,0.2);
+    border: 1px solid var(--terra);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 7px; font-weight: 600;
+    color: var(--terra-light);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  /* Hero metric */
+  .s5-hero-metric {
+    background: rgba(250,246,239,0.05);
+    border: 1px solid rgba(250,246,239,0.08);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .s5-metric-label { font-size: 8px; color: rgba(250,246,239,0.45); letter-spacing: 0.1em; text-transform: uppercase; }
+  .s5-metric-val {
+    font-family: var(--font-display);
+    font-size: 34px; font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    margin: 4px 0;
+  }
+  .s5-metric-val b { color: var(--terra-light); font-weight: 600; }
+  .s5-metric-trend { font-size: 8px; color: var(--forest-light); }
+  /* Stats grid */
+  .s5-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 16px 12px; }
+  .s5-stat-card {
+    background: rgba(250,246,239,0.04);
+    border: 1px solid rgba(250,246,239,0.07);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+  .s5-sc-label { font-size: 7px; color: rgba(250,246,239,0.4); margin-bottom: 4px; }
+  .s5-sc-val { font-size: 16px; font-weight: 600; color: var(--cream); }
+  .s5-sc-sub { font-size: 7px; color: rgba(250,246,239,0.4); }
+  /* Link section */
+  .s5-link { padding: 0 16px 12px; }
+  .s5-link-label { font-size: 9px; font-weight: 600; color: rgba(250,246,239,0.7); margin-bottom: 6px; }
+  .s5-link-box {
+    background: rgba(196,98,45,0.1);
+    border: 1px solid rgba(196,98,45,0.25);
+    border-radius: 10px;
+    padding: 9px 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .s5-link-url { font-size: 8px; color: var(--terra-light); flex: 1; }
+  .s5-copy {
+    background: var(--terra);
+    color: white; border: none; border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 8px; font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+  }
+  /* Recent activity */
+  .s5-activity { padding: 0 16px; }
+  .s5-act-label { font-size: 9px; font-weight: 600; color: rgba(250,246,239,0.7); margin-bottom: 8px; }
+  .s5-act-item {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .s5-act-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .s5-act-dot.g { background: var(--forest-light); }
+  .s5-act-dot.o { background: var(--ochre); }
+  .s5-act-text { flex:1; font-size: 8px; color: rgba(250,246,239,0.6); line-height: 1.4; }
+  .s5-act-val { font-size: 9px; font-weight: 600; color: var(--terra-light); }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="logo">Ku<span>Gava</span></div>
+  <div class="tagline">Marketplace Imobiliário · Moçambique</div>
+</div>
+
+<div class="screens">
+
+  <!-- SCREEN 1: HOME -->
+  <div class="screen-wrap">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-content s1">
+
+        <div class="s1-header">
+          <div class="s1-top">
+            <div>
+              <div class="s1-greeting">Bom dia, Carlos</div>
+              <div class="s1-city">📍 <span>Maputo</span>, Moçambique</div>
+            </div>
+            <div class="s1-avatar">CL</div>
+          </div>
+          <div class="s1-logo">Ku<b>Gava</b></div>
+        </div>
+
+        <div class="s1-search">
+          <input placeholder="Pesquisar casas, terrenos..."/>
+        </div>
+
+        <div class="s1-filters">
+          <div class="pill active">Todos</div>
+          <div class="pill">Casas</div>
+          <div class="pill">Terrenos</div>
+          <div class="pill">Arrendar</div>
+          <div class="pill">Comprar</div>
+        </div>
+
+        <div class="s1-section">
+          <h3>Em Destaque</h3>
+          <a>Ver todos →</a>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-card-img">
+            <div class="feat-badge">DESTAQUE</div>
+            <div class="feat-card-geo">📍 Sommerschield</div>
+            <div class="feat-card-info">
+              <div class="feat-card-price">4 200 000 MT</div>
+              <div class="feat-card-name">Vivenda T4 — Piscina inclusa · 320m²</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="s1-section" style="padding-top:12px;">
+          <h3>Recentes</h3>
+          <a>Ver todos →</a>
+        </div>
+
+        <div class="mini-row">
+          <div class="mini-card">
+            <div class="mini-card-img"></div>
+            <div class="mini-card-body">
+              <div class="mini-card-price">1 800 000 MT</div>
+              <div class="mini-card-loc">📍 Matola</div>
+            </div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-img v2"></div>
+            <div class="mini-card-body">
+              <div class="mini-card-price">850 000 MT</div>
+              <div class="mini-card-loc">📍 KaMubukwana</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-bar">
+          <div class="nav-item active">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            Início
+          </div>
+          <div class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M14 14l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Pesquisar
+          </div>
+          <div class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <path d="M4 4h12v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 4V2M12 4V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Agenda
+          </div>
+          <div class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M3 17c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Perfil
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="screen-label">01 · Home Feed</div>
+  </div>
+
+  <!-- SCREEN 2: DETAIL -->
+  <div class="screen-wrap">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-content s2">
+
+        <div class="s2-hero">
+          <div class="s2-back">←</div>
+          <div class="s2-heart">♡</div>
+          <div class="s2-img-dots">
+            <div class="s2-dot active"></div>
+            <div class="s2-dot"></div>
+            <div class="s2-dot"></div>
+          </div>
+        </div>
+
+        <div class="s2-body">
+          <div class="s2-tag">Casa · À Venda</div>
+          <div class="s2-title">Vivenda T4<br>com Piscina</div>
+          <div class="s2-loc">📍 Sommerschield II, Maputo</div>
+
+          <div class="s2-price-row">
+            <div class="s2-price">4 200 000 MT</div>
+            <div class="s2-price-label">Negociável</div>
+          </div>
+
+          <div class="s2-stats">
+            <div class="s2-stat">
+              <div class="s2-stat-val">4</div>
+              <div class="s2-stat-key">Quartos</div>
+            </div>
+            <div class="s2-stat">
+              <div class="s2-stat-val">3</div>
+              <div class="s2-stat-key">WC</div>
+            </div>
+            <div class="s2-stat">
+              <div class="s2-stat-val">320</div>
+              <div class="s2-stat-key">m²</div>
+            </div>
+            <div class="s2-stat">
+              <div class="s2-stat-val">2</div>
+              <div class="s2-stat-key">Garagem</div>
+            </div>
+          </div>
+
+          <div class="s2-agent">
+            <div class="s2-agent-av">JM</div>
+            <div>
+              <div class="s2-agent-name">João Machava</div>
+              <div class="s2-agent-role">Agente Verificado · KuGava Pro</div>
+            </div>
+            <div class="s2-agent-badge">✓ PRO</div>
+          </div>
+
+          <div class="s2-btns">
+            <button class="btn-prim">Agendar Visita</button>
+            <button class="btn-sec">💬 Chat</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="screen-label">02 · Detalhe do Imóvel</div>
+  </div>
+
+  <!-- SCREEN 3: CHAT -->
+  <div class="screen-wrap">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-content s3">
+
+        <div class="s3-header">
+          <div class="s3-back">←</div>
+          <div class="s3-av">JM</div>
+          <div class="s3-info">
+            <div class="s3-name">João Machava</div>
+            <div class="s3-status">● Online agora</div>
+          </div>
+        </div>
+
+        <div class="s3-prop">
+          <div class="s3-prop-thumb"></div>
+          <div>
+            <div class="s3-prop-title">Vivenda T4 — Sommerschield</div>
+            <div class="s3-prop-price">4 200 000 MT</div>
+          </div>
+        </div>
+
+        <div class="s3-msgs">
+          <div class="msg msg-l">
+            <div class="msg-bubble">Bom dia! Tenho interesse na vivenda. Ainda está disponível?</div>
+          </div>
+          <div class="msg msg-r">
+            <div class="msg-bubble">Bom dia! Sim, está disponível. Podemos agendar uma visita esta semana.</div>
+            <div class="msg-time">9:42</div>
+          </div>
+          <div class="msg msg-l">
+            <div class="msg-bubble">Perfeito! Quinta ou sexta seria ideal para mim.</div>
+          </div>
+        </div>
+
+        <div class="sched-card">
+          <div class="sched-icon">📅</div>
+          <div>
+            <div class="sched-title">Visita Agendada</div>
+            <div class="sched-date">Quinta, 27 Mar · 10h00</div>
+          </div>
+        </div>
+
+        <div class="s3-input-row">
+          <input class="s3-input" placeholder="Escreve uma mensagem..."/>
+          <button class="s3-send">↑</button>
+        </div>
+
+      </div>
+    </div>
+    <div class="screen-label">03 · Chat</div>
+  </div>
+
+  <!-- SCREEN 4: AGENDAMENTO -->
+  <div class="screen-wrap">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-content s4">
+
+        <div class="s4-header">
+          <div class="s4-hback">← Voltar</div>
+          <div class="s4-htitle">Agendar<br>Visita</div>
+          <div class="s4-hprop">Vivenda T4 · Sommerschield II</div>
+        </div>
+
+        <div class="s4-cal">
+          <div class="s4-cal-header">
+            <div class="s4-cal-month">Março 2025</div>
+            <div class="s4-cal-nav"><span>‹</span><span>›</span></div>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-day-label">S</div>
+            <div class="cal-day-label">T</div>
+            <div class="cal-day-label">Q</div>
+            <div class="cal-day-label">Q</div>
+            <div class="cal-day-label">S</div>
+            <div class="cal-day-label">S</div>
+            <div class="cal-day-label">D</div>
+            <div class="cal-day available">24</div>
+            <div class="cal-day available">25</div>
+            <div class="cal-day today">26</div>
+            <div class="cal-day active">27</div>
+            <div class="cal-day available">28</div>
+            <div class="cal-day available">29</div>
+            <div class="cal-day">30</div>
+            <div class="cal-day available">31</div>
+            <div class="cal-day available">1</div>
+            <div class="cal-day available">2</div>
+            <div class="cal-day available">3</div>
+            <div class="cal-day available">4</div>
+            <div class="cal-day">5</div>
+          </div>
+        </div>
+
+        <div class="s4-slots">
+          <div class="s4-slots-label">Horários disponíveis</div>
+          <div class="slots-grid">
+            <div class="slot">08h00</div>
+            <div class="slot active">10h00</div>
+            <div class="slot">12h00</div>
+            <div class="slot taken">14h00</div>
+            <div class="slot">16h00</div>
+            <div class="slot taken">18h00</div>
+          </div>
+        </div>
+
+        <div class="s4-confirm">
+          <div class="s4-agent-row">
+            <div class="s4-agent-av">JM</div>
+            <div class="s4-agent-info">
+              <div class="s4-agent-name">João Machava · Agente</div>
+              <div class="s4-agent-sub">Quinta, 27 Mar · 10h00</div>
+            </div>
+          </div>
+          <button class="btn-confirm">Confirmar Agendamento →</button>
+        </div>
+
+      </div>
+    </div>
+    <div class="screen-label">04 · Agendamento</div>
+  </div>
+
+  <!-- SCREEN 5: AFILIADO -->
+  <div class="screen-wrap">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-content s5">
+
+        <div class="s5-header">
+          <div class="s5-top">
+            <div class="s5-title">Painel<br><span>Afiliado</span></div>
+            <div class="s5-level">Nível Prata</div>
+          </div>
+
+          <div class="s5-hero-metric">
+            <div class="s5-metric-label">Ganhos este mês</div>
+            <div class="s5-metric-val"><b>12</b> 400 MT</div>
+            <div class="s5-metric-trend">↑ +18% vs mês anterior</div>
+          </div>
+        </div>
+
+        <div class="s5-stats">
+          <div class="s5-stat-card">
+            <div class="s5-sc-label">Indicações</div>
+            <div class="s5-sc-val">14</div>
+            <div class="s5-sc-sub">este mês</div>
+          </div>
+          <div class="s5-stat-card">
+            <div class="s5-sc-label">Conversões</div>
+            <div class="s5-sc-val">3</div>
+            <div class="s5-sc-sub">negócios fechados</div>
+          </div>
+          <div class="s5-stat-card">
+            <div class="s5-sc-label">Taxa conversão</div>
+            <div class="s5-sc-val">21%</div>
+            <div class="s5-sc-sub">acima da média</div>
+          </div>
+          <div class="s5-stat-card">
+            <div class="s5-sc-label">Total acumulado</div>
+            <div class="s5-sc-val">38 900</div>
+            <div class="s5-sc-sub">MT ganhos</div>
+          </div>
+        </div>
+
+        <div class="s5-link">
+          <div class="s5-link-label">O teu link de indicação</div>
+          <div class="s5-link-box">
+            <div class="s5-link-url">kugava.mz/ref/carlos42</div>
+            <button class="s5-copy">Copiar</button>
+          </div>
+        </div>
+
+        <div class="s5-activity">
+          <div class="s5-act-label">Actividade recente</div>
+          <div class="s5-act-item">
+            <div class="s5-act-dot g"></div>
+            <div class="s5-act-text">Negócio fechado via tua indicação</div>
+            <div class="s5-act-val">+5 800 MT</div>
+          </div>
+          <div class="s5-act-item">
+            <div class="s5-act-dot o"></div>
+            <div class="s5-act-text">Novo registo via link · Ana Sitoe</div>
+            <div class="s5-act-val">+200 MT</div>
+          </div>
+          <div class="s5-act-item">
+            <div class="s5-act-dot g"></div>
+            <div class="s5-act-text">Visita confirmada · Matola</div>
+            <div class="s5-act-val">+500 MT</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="screen-label">05 · Painel Afiliado</div>
+  </div>
+
+</div>
+
+</body>
+</html>

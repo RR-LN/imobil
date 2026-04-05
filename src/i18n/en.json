@@ -1,0 +1,121 @@
+{
+  "app": {
+    "name": "Kugava",
+    "tagline": "Luxury Real Estate"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "referralCode": "Referral Code (optional)",
+    "confirmPassword": "Confirm Password",
+    "biometricLogin": "Login with Biometrics",
+    "biometricNotAvailable": "Biometrics not available"
+  },
+  "home": {
+    "title": "Discover Properties",
+    "featured": "Featured",
+    "search": "Search",
+    "searchPlaceholder": "Search by city, type...",
+    "filters": "Filters",
+    "viewMap": "View Map",
+    "noResults": "No properties found",
+    "loading": "Loading..."
+  },
+  "filters": {
+    "title": "Search Filters",
+    "basic": "Basic",
+    "advanced": "Advanced",
+    "propertyType": "Property Type",
+    "transaction": "Transaction",
+    "priceRange": "Price Range",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "area": "Area (m²)",
+    "city": "City",
+    "sortBy": "Sort By",
+    "newest": "Newest First",
+    "oldest": "Oldest First",
+    "priceLow": "Price: Low to High",
+    "priceHigh": "Price: High to Low",
+    "any": "Any",
+    "sale": "Sale",
+    "rent": "Rent",
+    "house": "House",
+    "apartment": "Apartment",
+    "land": "Land",
+    "apply": "Apply Filters",
+    "clear": "Clear",
+    "min": "Min",
+    "max": "Max"
+  },
+  "property": {
+    "details": "Property Details",
+    "description": "Description",
+    "location": "Location",
+    "contact": "Contact Agent",
+    "scheduleVisit": "Schedule Visit",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "parking": "Parking",
+    "area": "Area",
+    "features": "Features",
+    "gallery": "Gallery",
+    "uploadImage": "Upload Image",
+    "share": "Share"
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next",
+    "getStarted": "Get Started",
+    "slide1Title": "Find Your Dream Home",
+    "slide1Desc": "Explore luxury properties across Mozambique with advanced search filters.",
+    "slide2Title": "Schedule Visits",
+    "slide2Desc": "Book property visits directly through the app with your preferred agent.",
+    "slide3Title": "Invest & Earn",
+    "slide3Desc": "Join our affiliate program and earn commissions on referrals.",
+    "slide4Title": "Secure & Private",
+    "slide4Desc": "Login securely with biometric authentication."
+  },
+  "admin": {
+    "title": "Dashboard",
+    "totalSales": "Total Sales",
+    "newLeads": "New Leads",
+    "occupancy": "Occupancy Rate",
+    "revenue": "Revenue",
+    "recentTransactions": "Recent Transactions",
+    "monthlyEvolution": "Monthly Evolution",
+    "status": {
+      "completed": "Completed",
+      "pending": "Pending",
+      "cancelled": "Cancelled"
+    }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "language": "Language",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "language": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  }
+}
