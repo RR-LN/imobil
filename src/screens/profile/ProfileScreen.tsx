@@ -14,6 +14,9 @@ import * as Haptics from "expo-haptics";
 
 import { useAuthStore } from "../../store/authStore";
 import { useFavoritesStore } from "../../store/favoritesStore";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ProfileStackParamList } from "../../navigation/ProfileStack";
 import { GlassCard } from "../../components/ui/GlassCard";
 
 const MENU_ITEMS = [
@@ -29,9 +32,13 @@ export const ProfileScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { profile, signOut } = useAuthStore();
   const { favorites, collections } = useFavoritesStore();
-
+  const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
+  
   const handleMenuPress = (id: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    if (id === 'appointments') {
+      navigation.navigate('MyAppointments');
+    }
   };
 
   const handleLogout = async () => {

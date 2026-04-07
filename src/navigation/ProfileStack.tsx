@@ -1,11 +1,11 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileScreen from '../screens/profile/ProfileScreen';
-import { MyPropertiesScreen } from '../screens/profile/MyPropertiesScreen';
-import { CreatePropertyScreen } from '../screens/profile/CreatePropertyScreen';
-import { AffiliateScreen } from '../screens/profile/AffiliateScreen';
-import { UpgradeScreen } from '../screens/profile/UpgradeScreen';
-import { colors, textStyles } from '../constants/theme';
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { ProfileScreen } from "../screens/profile/ProfileScreen";
+import { MyPropertiesScreen } from "../screens/profile/MyPropertiesScreen";
+import { CreatePropertyScreen } from "../screens/profile/CreatePropertyScreen";
+import { AffiliateScreen } from "../screens/profile/AffiliateScreen";
+import { UpgradeScreen } from "../screens/profile/UpgradeScreen";
+import { MyAppointmentsScreen } from "../screens/appointments/MyAppointmentsScreen";
 
 export type ProfileStackParamList = {
   ProfileMain: undefined;
@@ -14,49 +14,20 @@ export type ProfileStackParamList = {
   EditProperty: { propertyId: string };
   Affiliate: undefined;
   Upgrade: undefined;
+  MyAppointments: undefined;
 };
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
 export const ProfileStack: React.FC = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: colors.white,
-        },
-        headerTintColor: colors.charcoal,
-        headerTitleStyle: {
-          ...textStyles.body,
-          fontWeight: '600' as const,
-        },
-      }}
-    >
-      <Stack.Screen
-        name="ProfileMain"
-        component={ProfileScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="MyProperties"
-        component={MyPropertiesScreen}
-        options={{ title: 'Meus Imoveis' }}
-      />
-      <Stack.Screen
-        name="CreateProperty"
-        component={CreatePropertyScreen}
-        options={{ title: 'Novo Imovel' }}
-      />
-      <Stack.Screen
-        name="Affiliate"
-        component={AffiliateScreen}
-        options={{ title: 'Painel Afiliado' }}
-      />
-      <Stack.Screen
-        name="Upgrade"
-        component={UpgradeScreen}
-        options={{ title: 'Fazer Upgrade' }}
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ProfileMain" component={ProfileScreen} />
+      <Stack.Screen name="MyProperties" component={MyPropertiesScreen} />
+      <Stack.Screen name="CreateProperty" component={CreatePropertyScreen} />
+      <Stack.Screen name="MyAppointments" component={MyAppointmentsScreen} />
+      <Stack.Screen name="Affiliate" component={AffiliateScreen} />
+      <Stack.Screen name="Upgrade" component={UpgradeScreen} />
     </Stack.Navigator>
   );
 };
