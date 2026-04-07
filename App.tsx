@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -14,6 +14,7 @@ import { QueryProvider } from './src/providers/QueryProvider';
 import { OfflineProvider } from './src/providers/OfflineProvider';
 import { ToastProvider } from './src/components/Toast';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
+import { initI18n } from './src/i18n';
 
 // Conditional Sentry import (web vs native)
 let Sentry: any = null;
@@ -68,6 +69,17 @@ function ErrorScreen() {
 
 const AppComponent = function App() {
   const { loaded, error } = useLoadFonts();
+  const [i18nLoaded, setI18nLoaded] = useState(false);
+
+  useEffect(() => {
+    // Initialize i18n
+    initI18n()
+      .then(() => setI18nLoaded(true))
+      .catch((err) => {
+        console.error('Failed to initialize i18n:', err);
+        setI18nLoaded(true); // Continue even if i18n fails
+      });
+  }, []);
 
   useEffect(() => {
     initializeReferralSystem().catch(console.error);
@@ -91,7 +103,7 @@ const AppComponent = function App() {
     return <ErrorScreen />;
   }
 
-  if (!loaded) {
+  if (!loaded || !i18nLoaded) {
     return <SplashScreen />;
   }
 
