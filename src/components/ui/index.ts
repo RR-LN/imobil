@@ -12,3 +12,5 @@ export { GlassCard } from './GlassCard';
 export { PrimaryButton } from './PrimaryButton';
 export { AnimatedMeshGradient } from './AnimatedMeshGradient';
 export { Skeleton } from './Skeleton';
+export { HeroPropertyCard } from './HeroPropertyCard';
+export { HeroPropertyList } from './HeroPropertyList';
