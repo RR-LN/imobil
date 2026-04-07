@@ -1,0 +1,47 @@
+{
+  "stateVersion": 9,
+  "lastSuggestion": {
+    "text": "continue",
+    "shownAt": "2026-04-07T20:32:19.627Z",
+    "turnId": "b506bb87",
+    "sourceLeafId": "b506bb87",
+    "variantName": "default",
+    "strategy": "compact",
+    "requestedStrategy": "compact"
+  },
+  "steeringHistory": [
+    {
+      "turnId": "18141269",
+      "suggestedPrompt": "Proceed, and explain the logic.",
+      "actualUserPrompt": "proceed and explain the logic",
+      "classification": "accepted_edited",
+      "similarity": 0.9833333333333334,
+      "timestamp": "2026-04-07T19:47:15.696Z"
+    },
+    {
+      "turnId": "2c851dff",
+      "suggestedPrompt": "npm run web",
+      "actualUserPrompt": "primeiro faz o push do projeto",
+      "classification": "changed_course",
+      "similarity": 0.14634146341463414,
+      "timestamp": "2026-04-07T20:04:16.838Z"
+    },
+    {
+      "turnId": "4838c8da",
+      "suggestedPrompt": "1",
+      "actualUserPrompt": "Make it \"real\" - Add real features like auth flow, booking system,  \n map integration",
+      "classification": "changed_course",
+      "similarity": 0,
+      "timestamp": "2026-04-07T20:19:09.557Z"
+    },
+    {
+      "turnId": "fb36daf0",
+      "suggestedPrompt": "continue",
+      "actualUserPrompt": "continue",
+      "classification": "accepted_exact",
+      "similarity": 1,
+      "timestamp": "2026-04-07T20:31:46.595Z"
+    }
+  ],
+  "turnsSinceLastStalenessCheck": 0
+}

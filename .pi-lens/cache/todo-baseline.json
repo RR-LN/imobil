@@ -1,0 +1,11 @@
+{
+  "items": [
+    {
+      "type": "TODO",
+      "message": "Navegar para chat com o agente",
+      "file": "src/screens/appointments/AppointmentsScreen.tsx",
+      "line": 108,
+      "column": 7
+    }
+  ]
+}

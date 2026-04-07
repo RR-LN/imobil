@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sessionId": "d6b9bb54-e12a-4c4b-ab7f-8e0969799036",
+  "sessionFile": "/home/lieven/.pi/agent/sessions/--home-lieven-0ai-kugava-app--/2026-04-07T16-03-42-592Z_d6b9bb54-e12a-4c4b-ab7f-8e0969799036.jsonl",
+  "cwd": "/home/lieven/0ai/kugava-app",
+  "ignoreLegacyPiSessionEntries": true,
+  "legacyMigration": {
+    "performedAt": "2026-04-07T16:04:50.624Z",
+    "importedLegacyEntries": false,
+    "legacyStateEntryCount": 0,
+    "legacyUsageEntryCount": 0,
+    "note": "Legacy suggester-state/suggester-usage pi session entries were imported once into extension-owned storage and are ignored afterwards."
+  }
+}

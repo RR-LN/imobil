@@ -1,0 +1,22 @@
+{
+  "stateVersion": 9,
+  "pendingNextTurnObservation": {
+    "suggestionTurnId": "18141269",
+    "suggestionShownAt": "2026-04-07T19:40:20.832Z",
+    "userPromptSubmittedAt": "2026-04-07T19:47:15.696Z",
+    "variantName": "default",
+    "strategy": "compact",
+    "requestedStrategy": "compact"
+  },
+  "steeringHistory": [
+    {
+      "turnId": "18141269",
+      "suggestedPrompt": "Proceed, and explain the logic.",
+      "actualUserPrompt": "proceed and explain the logic",
+      "classification": "accepted_edited",
+      "similarity": 0.9833333333333334,
+      "timestamp": "2026-04-07T19:47:15.696Z"
+    }
+  ],
+  "turnsSinceLastStalenessCheck": 1
+}

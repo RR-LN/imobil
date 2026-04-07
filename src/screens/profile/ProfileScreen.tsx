@@ -1,209 +1,137 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Alert,
-  Platform,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { useAuthStore } from '../../store/authStore';
-import { colors, spacing, borderRadius, typography, shadows } from '../../constants/theme';
-import { MaterialIcons } from '@expo/vector-icons';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ProfileStackParamList } from '../../navigation/ProfileStack';
-import { isWeb, getContainerMaxWidth } from '../../utils/responsive';
+  Image,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+import * as Haptics from "expo-haptics";
 
-type NavigationProp = NativeStackNavigationProp<ProfileStackParamList>;
+import { useAuthStore } from "../../store/authStore";
+import { useFavoritesStore } from "../../store/favoritesStore";
+import { GlassCard } from "../../components/ui/GlassCard";
 
-interface MenuItem {
-  icon: string;
-  iconName?: string;
-  title: string;
-  subtitle?: string;
-  route?: string;
-  action?: () => void;
-  danger?: boolean;
-}
+const MENU_ITEMS = [
+  { id: "favorites", icon: "heart", label: "Favoritos" },
+  { id: "appointments", icon: "calendar", label: "Visitas Agendadas" },
+  { id: "messages", icon: "chatbubbles", label: "Mensagens" },
+  { id: "saved", icon: "bookmark", label: "Pesquisas Guardadas" },
+  { id: "history", icon: "time", label: "Historico" },
+  { id: "settings", icon: "settings", label: "Definicoes" },
+];
 
 export const ProfileScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation<NavigationProp>();
+  const { profile, signOut } = useAuthStore();
+  const { favorites, collections } = useFavoritesStore();
 
-  const { user, profile, isAuthenticated, signOut } = useAuthStore();
-
-  // Get user initials for avatar
-  const getUserInitials = () => {
-    if (!profile?.full_name) return '?';
-    const names = profile.full_name.split(' ');
-    if (names.length >= 2) {
-      return `${names[0][0]}${names[1][0]}`.toUpperCase();
-    }
-    return names[0][0].toUpperCase();
+  const handleMenuPress = (id: string) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
-  // Handle sign out
-  const handleSignOut = () => {
-    Alert.alert(
-      'Terminar sessao',
-      'Tens a certeza que queres terminar a sessao?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Terminar',
-          style: 'destructive',
-          onPress: signOut,
-        },
-      ]
-    );
+  const handleLogout = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    await signOut();
   };
 
-  // Menu items
-  const menuItems: MenuItem[] = [
-    {
-      icon: '🏠',
-      title: 'Meus Imoveis',
-      subtitle: 'Gerir os teus imoveis publicados',
-      route: 'MyProperties',
-    },
-    {
-      icon: '⬆️',
-      title: 'Fazer Upgrade',
-      subtitle: 'Torna-te agente ou afiliado',
-      route: 'Upgrade',
-    },
-    {
-      icon: '💰',
-      title: 'Afiliados',
-      subtitle: 'Ganha comissões por indicações',
-      route: 'Affiliate',
-    },
-    {
-      icon: '🚪',
-      title: 'Terminar Sessao',
-      action: handleSignOut,
-      danger: true,
-    },
-  ];
-
-  // Handle menu item press
-  const handleMenuPress = (item: MenuItem) => {
-    if (item.action) {
-      item.action();
-    } else if (item.route) {
-      navigation.navigate(item.route as any);
-    }
+  const getBadgeCount = (id: string) => {
+    if (id === "favorites") return favorites.length;
+    return 0;
   };
-
-  // Not authenticated state
-  if (!isAuthenticated) {
-    return (
-      <View style={styles.container}>
-        <View style={[styles.header, { paddingTop: insets.top + spacing.lg }]}>
-          <Text style={styles.headerTitle}>Perfil</Text>
-        </View>
-
-        <View style={styles.notAuthContainer}>
-          <Text style={styles.notAuthIcon}>👤</Text>
-          <Text style={styles.notAuthTitle}>Inicia sessao</Text>
-          <Text style={styles.notAuthText}>
-            Entra na tua conta para aceder ao teu perfil e gerir os teus imoveis
-          </Text>
-        </View>
-      </View>
-    );
-  }
 
   return (
-    <View style={[styles.container, isWeb && styles.containerWeb]}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={[
-          { paddingBottom: insets.bottom + spacing['3xl'] },
-          isWeb && styles.scrollContentWeb,
-        ]}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.content}
       >
-        {/* HEADER */}
-        <View style={[styles.header, { paddingTop: insets.top + spacing.lg }, isWeb && styles.headerWeb]}>
-          {/* Avatar */}
-          <View style={styles.avatarContainer}>
-            <LinearGradient
-              colors={[colors.terra, colors.ochre]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.avatar}
-            >
-              <Text style={styles.avatarText}>{getUserInitials()}</Text>
-            </LinearGradient>
-          </View>
+        <Animated.View entering={FadeInDown} style={styles.header}>
+          <Text style={styles.title}>Perfil</Text>
+          <TouchableOpacity style={styles.settingsButton}>
+            <Ionicons name="settings-outline" size={24} color="#2D3A2D" />
+          </TouchableOpacity>
+        </Animated.View>
 
-          {/* User Info */}
-          <Text style={styles.userName}>{profile?.full_name || 'Utilizador'}</Text>
-          <Text style={styles.userEmail}>{user?.email || ''}</Text>
+        <Animated.View entering={FadeInUp.delay(100)}>
+          <GlassCard style={styles.profileCard}>
+            <View style={styles.avatarContainer}>
+              {profile?.avatar_url ? (
+                <Image
+                  source={{ uri: profile.avatar_url }}
+                  style={styles.avatar}
+                />
+              ) : (
+                <View style={[styles.avatar, styles.avatarPlaceholder]}>
+                  <Text style={styles.avatarText}>
+                    {profile?.full_name?.[0]?.toUpperCase() || "U"}
+                  </Text>
+                </View>
+              )}
+            </View>
 
-          {/* Role Badge */}
-          <View style={styles.roleBadge}>
-            <Text style={styles.roleText}>
-              {profile?.role === 'affiliate' ? 'Afiliado' : profile?.is_seller ? 'Vendedor' : 'Utilizador'}
-            </Text>
-          </View>
-        </View>
+            <View style={styles.profileInfo}>
+              <Text style={styles.name}>{profile?.full_name || "Utilizador"}</Text>
+              <View style={styles.roleBadge}>
+                <Text style={styles.roleText}>
+                  {profile?.role === "agent" ? "Agente" : profile?.role === "seller" ? "Vendedor" : "Membro"}
+                </Text>
+              </View>
+            </View>
+          </GlassCard>
+        </Animated.View>
 
-        {/* STATS */}
-        <View style={styles.statsContainer}>
+        <Animated.View entering={FadeInUp.delay(200)} style={styles.statsContainer}>
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>0</Text>
-            <Text style={styles.statLabel}>Imoveis</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>0</Text>
+            <Text style={styles.statNumber}>{favorites.length}</Text>
             <Text style={styles.statLabel}>Favoritos</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.statItem}>
-            <Text style={styles.statValue}>0</Text>
+            <Text style={styles.statNumber}>{Object.keys(collections).length}</Text>
+            <Text style={styles.statLabel}>Colecoes</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>0</Text>
             <Text style={styles.statLabel}>Visitas</Text>
           </View>
-        </View>
+        </Animated.View>
 
-        {/* MENU */}
-        <View style={[styles.menuContainer, isWeb && styles.menuContainerWeb]}>
-          {menuItems.map((item, index) => (
+        <Animated.View entering={FadeInUp.delay(300)} style={styles.menu}>
+          {MENU_ITEMS.map((item) => (
             <TouchableOpacity
-              key={index}
-              style={[
-                styles.menuItem,
-                index === menuItems.length - 1 && styles.menuItemLast,
-              ]}
-              onPress={() => handleMenuPress(item)}
+              key={item.id}
+              style={styles.menuItem}
+              onPress={() => handleMenuPress(item.id)}
               activeOpacity={0.8}
             >
               <View style={styles.menuIconContainer}>
-                <Text style={styles.menuIcon}>{item.icon}</Text>
+                <Ionicons name={item.icon as any} size={22} color="#5A6B5A" />
               </View>
-              <View style={styles.menuContent}>
-                <Text style={[styles.menuTitle, item.danger && styles.menuTitleDanger]}>
-                  {item.title}
-                </Text>
-                {item.subtitle && (
-                  <Text style={styles.menuSubtitle}>{item.subtitle}</Text>
-                )}
-              </View>
-              {!item.danger && (
-                <Text style={styles.menuArrow}>→</Text>
+              <Text style={styles.menuLabel}>{item.label}</Text>
+              {getBadgeCount(item.id) > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{getBadgeCount(item.id)}</Text>
+                </View>
               )}
+              <Ionicons name="chevron-forward" size={20} color="#8B988B" />
             </TouchableOpacity>
           ))}
-        </View>
+        </Animated.View>
 
-        {/* VERSION */}
-        <Text style={styles.version}>Imobil v1.0.0</Text>
+        <Animated.View entering={FadeInUp.delay(400)}>
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Ionicons name="log-out-outline" size={20} color="#B85C5C" />
+            <Text style={styles.logoutText}>Terminar Sessao</Text>
+          </TouchableOpacity>
+        </Animated.View>
+
+        <Text style={styles.version}>Kugava v1.0.0</Text>
       </ScrollView>
     </View>
   );
@@ -212,205 +140,171 @@ export const ProfileScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.warmWhite,
+    backgroundColor: "#F7F5F3",
   },
-  scrollView: {
-    flex: 1,
+  content: {
+    paddingBottom: 40,
   },
-
-// HEADER
-	header: {
-		alignItems: 'center',
-		paddingHorizontal: spacing.lg,
-		paddingBottom: spacing.lg,
-		backgroundColor: colors.white,
-		borderBottomWidth: 1,
-		borderBottomColor: colors.border,
-	},
-	headerTitle: {
-		fontFamily: 'Georgia',
-		fontSize: 28,
-		fontWeight: '400' as const,
-		color: colors.charcoal,
-	},
-	avatarContainer: {
-    marginBottom: spacing.md,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#2D3A2D",
+  },
+  settingsButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  profileCard: {
+    marginHorizontal: 20,
+    alignItems: "center",
+    padding: 24,
+  },
+  avatarContainer: {
+    marginBottom: 16,
   },
   avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...shadows.md,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  avatarPlaceholder: {
+    backgroundColor: "#5A6B5A",
+    justifyContent: "center",
+    alignItems: "center",
   },
   avatarText: {
-    fontSize: 28,
-    fontWeight: '600',
-    color: colors.white,
+    fontSize: 36,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
-  userName: {
-    fontFamily: 'Georgia',
-    fontSize: 24,
-    fontWeight: '400',
-    color: colors.charcoal,
+  profileInfo: {
+    alignItems: "center",
+  },
+  name: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#2D3A2D",
     marginBottom: 4,
   },
-  userEmail: {
-    fontSize: typography.sizes.sm,
-    color: colors.lightMid,
-    marginBottom: spacing.sm,
+  email: {
+    fontSize: 14,
+    color: "#8B988B",
+    marginBottom: 12,
   },
   roleBadge: {
-    backgroundColor: colors.forest,
+    backgroundColor: "rgba(90, 107, 90, 0.1)",
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
-    marginTop: spacing.sm,
   },
   roleText: {
-    fontSize: typography.sizes.xs,
-    fontWeight: '600',
-    color: colors.white,
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#5A6B5A",
+    textTransform: "uppercase",
   },
-
-  // STATS
   statsContainer: {
-    flexDirection: 'row',
-    backgroundColor: colors.white,
-    marginHorizontal: spacing.lg,
-    marginTop: -spacing.md,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingVertical: spacing.md,
-    ...shadows.sm,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    marginHorizontal: 20,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 20,
   },
   statItem: {
     flex: 1,
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 22,
-    fontWeight: '600',
-    color: colors.charcoal,
-  },
-  statLabel: {
-    fontSize: typography.sizes.xs,
-    color: colors.lightMid,
-    marginTop: 2,
+    alignItems: "center",
   },
   statDivider: {
     width: 1,
-    backgroundColor: colors.border,
-    marginVertical: 4,
+    height: 40,
+    backgroundColor: "#E8E4E0",
   },
-
-  // MENU
-  menuContainer: {
-    marginHorizontal: spacing.lg,
-    marginTop: spacing.lg,
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    overflow: 'hidden',
+  statNumber: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#2D3A2D",
+  },
+  statLabel: {
+    fontSize: 12,
+    color: "#8B988B",
+    marginTop: 4,
+  },
+  menu: {
+    marginTop: 24,
+    marginHorizontal: 20,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    overflow: "hidden",
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md,
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.border,
-  },
-  menuItemLast: {
-    borderBottomWidth: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F0EBE5",
   },
   menuIconContainer: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.cream,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: spacing.md,
+    borderRadius: 12,
+    backgroundColor: "#F7F5F3",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
   },
-  // Removed - using MaterialIcons instead
-  menuIcon: {
-    fontSize: 20,
-  },
-  menuContent: {
+  menuLabel: {
     flex: 1,
-  },
-  menuTitle: {
-    fontSize: typography.sizes.md,
-    fontWeight: '500',
-    color: colors.charcoal,
-  },
-  menuTitleDanger: {
-    color: '#DC3545',
-  },
-  menuSubtitle: {
-    fontSize: typography.sizes.xs,
-    color: colors.lightMid,
-    marginTop: 2,
-  },
-  menuArrow: {
     fontSize: 16,
-    color: colors.lightMid,
+    color: "#2D3A2D",
+    fontWeight: "500",
   },
-
-  // NOT AUTHENTICATED
-  notAuthContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.xl,
+  badge: {
+    backgroundColor: "#5A6B5A",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 10,
+    marginRight: 8,
   },
-  notAuthIcon: {
-    fontSize: 64,
-    marginBottom: spacing.lg,
+  badgeText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
-  notAuthTitle: {
-    fontFamily: 'Georgia',
-    fontSize: 24,
-    fontWeight: '400',
-    color: colors.charcoal,
-    marginBottom: spacing.sm,
+  logoutButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 20,
+    marginTop: 24,
+    paddingVertical: 16,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
   },
-  notAuthText: {
-    fontSize: typography.sizes.md,
-    color: colors.mid,
-    textAlign: 'center',
-    lineHeight: 22,
+  logoutText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#B85C5C",
+    marginLeft: 8,
   },
-
-  // VERSION
   version: {
-    textAlign: 'center',
-    fontSize: typography.sizes.xs,
-    color: colors.lightMid,
-    marginTop: spacing.xl,
-    marginBottom: spacing.lg,
-  },
-
-  // WEB RESPONSIVE STYLES
-  containerWeb: {
-    maxWidth: getContainerMaxWidth(),
-    width: '100%',
-    alignSelf: 'center',
-    paddingHorizontal: 0,
-  },
-  headerWeb: {
-    paddingHorizontal: spacing.lg,
-  },
-  scrollContentWeb: {
-    paddingHorizontal: spacing.lg,
-  },
-  menuContainerWeb: {
-    paddingHorizontal: spacing.lg,
+    textAlign: "center",
+    marginTop: 32,
+    fontSize: 12,
+    color: "#8B988B",
   },
 });
-
-export default ProfileScreen;

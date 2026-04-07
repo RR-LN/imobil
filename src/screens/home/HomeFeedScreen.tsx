@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -7,36 +7,40 @@ import {
   TouchableOpacity,
   TextInput,
   RefreshControl,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 
-import { useAuthStore } from '../../store/authStore';
-import { usePropertiesStore, PropertyFilter } from '../../store/propertiesStore';
-import { Property } from '../../services/supabase';
-import { HeroPropertyList } from '../../components/ui/HeroPropertyList';
-import { GlassCard } from '../../components/ui/GlassCard';
-import { HomeStackParamList } from '../../navigation/HomeStack';
+import { useAuthStore } from "../../store/authStore";
+import {
+  usePropertiesStore,
+  PropertyFilter,
+} from "../../store/propertiesStore";
+import { useFavoritesStore } from "../../store/favoritesStore";
+import { Property, } from "../../services/supabase";
+import { HeroPropertyList } from "../../components/ui/HeroPropertyList";
+import { GlassCard } from "../../components/ui/GlassCard";
+import { HomeStackParamList } from "../../navigation/HomeStack";
 
-type Props = NativeStackScreenProps<HomeStackParamList, 'HomeFeed'>;
+type Props = NativeStackScreenProps<HomeStackParamList, "HomeFeed">;
 
 const FILTERS = [
-  { id: 'all', label: 'Todos', icon: 'grid' as const },
-  { id: 'houses', label: 'Casas', icon: 'home' as const },
-  { id: 'land', label: 'Terrenos', icon: 'map' as const },
-  { id: 'apartments', label: 'Apartamentos', icon: 'business' as const },
-  { id: 'rent', label: 'Arrendar', icon: 'key' as const },
-  { id: 'sale', label: 'Comprar', icon: 'cash' as const },
+  { id: "all", label: "Todos", icon: "grid" as const },
+  { id: "houses", label: "Casas", icon: "home" as const },
+  { id: "land", label: "Terrenos", icon: "map" as const },
+  { id: "apartments", label: "Apartamentos", icon: "business" as const },
+  { id: "rent", label: "Arrendar", icon: "key" as const },
+  { id: "sale", label: "Comprar", icon: "cash" as const },
 ];
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 export const HomeFeedScreen: React.FC<Props> = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -66,19 +70,19 @@ export const HomeFeedScreen: React.FC<Props> = ({ navigation }) => {
 
   const handlePropertyPress = (property: Property) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    navigation.navigate('PropertyDetail', { propertyId: property.id });
+    navigation.navigate("PropertyDetail", { propertyId: property.id });
   };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return 'Bom dia';
-    if (hour < 18) return 'Boa tarde';
-    return 'Boa noite';
+    if (hour < 12) return "Bom dia";
+    if (hour < 18) return "Boa tarde";
+    return "Boa noite";
   };
 
   const getUserName = () => {
-    if (!isAuthenticated || !profile?.full_name) return 'Visitante';
-    return profile.full_name.split(' ')[0];
+    if (!isAuthenticated || !profile?.full_name) return "Visitante";
+    return profile.full_name.split(" ")[0];
   };
 
   const handleFilterPress = (filterId: PropertyFilter) => {
@@ -94,7 +98,10 @@ export const HomeFeedScreen: React.FC<Props> = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Animated.View entering={FadeInDown.duration(500)} style={styles.header}>
+        <Animated.View
+          entering={FadeInDown.duration(500)}
+          style={styles.header}
+        >
           <View style={styles.headerContent}>
             <View style={styles.headerTop}>
               <View>
@@ -124,7 +131,7 @@ export const HomeFeedScreen: React.FC<Props> = ({ navigation }) => {
                     onChangeText={setSearchQuery}
                   />
                   {searchQuery.length > 0 && (
-                    <TouchableOpacity onPress={() => setSearchQuery('')}>
+                    <TouchableOpacity onPress={() => setSearchQuery("")}>
                       <Ionicons name="close-circle" size={20} color="#8B988B" />
                     </TouchableOpacity>
                   )}
@@ -139,7 +146,10 @@ export const HomeFeedScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         </Animated.View>
 
-        <Animated.View entering={FadeInDown.delay(100)} style={styles.filterSection}>
+        <Animated.View
+          entering={FadeInDown.delay(100)}
+          style={styles.filterSection}
+        >
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -151,16 +161,24 @@ export const HomeFeedScreen: React.FC<Props> = ({ navigation }) => {
                 <AnimatedTouchable
                   key={filter.id}
                   entering={FadeInUp.delay(index * 50)}
-                  style={[styles.filterPill, isActive && styles.filterPillActive]}
+                  style={[
+                    styles.filterPill,
+                    isActive && styles.filterPillActive,
+                  ]}
                   onPress={() => handleFilterPress(filter.id as PropertyFilter)}
                 >
                   <Ionicons
                     name={filter.icon}
                     size={16}
-                    color={isActive ? '#FFFFFF' : '#5A6B5A'}
+                    color={isActive ? "#FFFFFF" : "#5A6B5A"}
                     style={styles.filterIcon}
                   />
-                  <Text style={[styles.filterText, isActive && styles.filterTextActive]}>
+                  <Text
+                    style={[
+                      styles.filterText,
+                      isActive && styles.filterTextActive,
+                    ]}
+                  >
                     {filter.label}
                   </Text>
                 </AnimatedTouchable>
@@ -181,11 +199,16 @@ export const HomeFeedScreen: React.FC<Props> = ({ navigation }) => {
           />
         </Animated.View>
 
-        <Animated.View entering={FadeInUp.delay(300)} style={styles.recentSection}>
+        <Animated.View
+          entering={FadeInUp.delay(300)}
+          style={styles.recentSection}
+        >
           <View style={styles.sectionHeader}>
             <View>
               <Text style={styles.sectionTitle}>Recentes</Text>
-              <Text style={styles.sectionSubtitle}>Adicionados recentemente</Text>
+              <Text style={styles.sectionSubtitle}>
+                Adicionados recentemente
+              </Text>
             </View>
             <TouchableOpacity style={styles.seeAllButton}>
               <Text style={styles.seeAllText}>Ver todos</Text>
@@ -211,7 +234,7 @@ export const HomeFeedScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F5F3',
+    backgroundColor: "#F7F5F3",
   },
   header: {
     paddingHorizontal: 20,
@@ -221,29 +244,29 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
   },
   greeting: {
     fontSize: 14,
-    color: '#8B988B',
+    color: "#8B988B",
     marginBottom: 4,
   },
   userName: {
     fontSize: 28,
-    fontWeight: '700',
-    color: '#2D3A2D',
+    fontWeight: "700",
+    color: "#2D3A2D",
     letterSpacing: -0.5,
   },
   searchButton: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
@@ -253,8 +276,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   searchCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
     gap: 12,
@@ -262,17 +285,17 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 15,
-    color: '#2D3A2D',
+    color: "#2D3A2D",
   },
   locationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
   locationText: {
     fontSize: 14,
-    color: '#5A6B5A',
-    fontWeight: '500',
+    color: "#5A6B5A",
+    fontWeight: "500",
   },
   filterSection: {
     marginTop: 8,
@@ -283,62 +306,62 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   filterPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 24,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     gap: 8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
     shadowRadius: 4,
     elevation: 1,
   },
   filterPillActive: {
-    backgroundColor: '#5A6B5A',
+    backgroundColor: "#5A6B5A",
   },
   filterIcon: {
     marginTop: 1,
   },
   filterText: {
     fontSize: 14,
-    fontWeight: '500',
-    color: '#5A6B5A',
+    fontWeight: "500",
+    color: "#5A6B5A",
   },
   filterTextActive: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   recentSection: {
     marginTop: 24,
   },
   sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
     paddingHorizontal: 20,
     marginBottom: 16,
   },
   sectionTitle: {
     fontSize: 22,
-    fontWeight: '700',
-    color: '#2D3A2D',
+    fontWeight: "700",
+    color: "#2D3A2D",
     letterSpacing: -0.3,
   },
   sectionSubtitle: {
     fontSize: 14,
-    color: '#8B988B',
+    color: "#8B988B",
     marginTop: 4,
   },
   seeAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 4,
   },
   seeAllText: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#A67B5B',
+    fontWeight: "600",
+    color: "#A67B5B",
   },
 });

@@ -1,0 +1,30 @@
+{
+  "stateVersion": 9,
+  "pendingNextTurnObservation": {
+    "suggestionTurnId": "2c851dff",
+    "suggestionShownAt": "2026-04-07T19:55:16.088Z",
+    "userPromptSubmittedAt": "2026-04-07T20:04:16.838Z",
+    "variantName": "default",
+    "strategy": "compact",
+    "requestedStrategy": "compact"
+  },
+  "steeringHistory": [
+    {
+      "turnId": "18141269",
+      "suggestedPrompt": "Proceed, and explain the logic.",
+      "actualUserPrompt": "proceed and explain the logic",
+      "classification": "accepted_edited",
+      "similarity": 0.9833333333333334,
+      "timestamp": "2026-04-07T19:47:15.696Z"
+    },
+    {
+      "turnId": "2c851dff",
+      "suggestedPrompt": "npm run web",
+      "actualUserPrompt": "primeiro faz o push do projeto",
+      "classification": "changed_course",
+      "similarity": 0.14634146341463414,
+      "timestamp": "2026-04-07T20:04:16.838Z"
+    }
+  ],
+  "turnsSinceLastStalenessCheck": 2
+}
