@@ -10,7 +10,6 @@ import Animated, {
   interpolateColor,
   SharedValue,
 } from 'react-native-reanimated';
-import { useTheme } from '../../theme/theme';
 
 interface AnimatedMeshGradientProps {
   style?: ViewStyle;
@@ -45,10 +44,10 @@ const circleConfigs: CircleConfig[] = [
 ];
 
 export function AnimatedMeshGradient({ style }: AnimatedMeshGradientProps) {
-  const theme = useTheme();
+  
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.light }, style]}>
+    <View style={[styles.container, { backgroundColor: '#F8FAFC' }, style]}>
       {circleConfigs.map((config, index) => (
         <AnimatedCircle key={index} config={config} />
       ))}
