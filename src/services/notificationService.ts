@@ -295,8 +295,8 @@ export const setBadgeCount = async (count: number): Promise<void> => {
   });
 };
 
-// Legacy default export for backward compatibility
-const notificationService = {
+// Legacy export object for backward compatibility
+export const notificationService = {
   setupNotificationHandlers,
   schedulePushNotification,
   registerForPushNotifications,
@@ -307,4 +307,5 @@ const notificationService = {
   setBadgeCount,
 };
 
+// Also as default for: import notificationService from '...'
 export default notificationService;
