@@ -313,14 +313,14 @@
     },
     "src/services/notificationService.ts": {
       "latest": {
-        "commit": "6f1f959",
-        "timestamp": "2026-04-08T08:20:05.606Z",
-        "mi": 38.3,
-        "cognitive": 38,
-        "nesting": 4,
-        "lines": 112,
-        "maxCyclomatic": 9,
-        "entropy": 5.72
+        "commit": "bbcc325",
+        "timestamp": "2026-04-08T21:38:05.372Z",
+        "mi": 33.5,
+        "cognitive": 40,
+        "nesting": 3,
+        "lines": 209,
+        "maxCyclomatic": 12,
+        "entropy": 6.16
       },
       "history": [
         {
@@ -332,9 +332,19 @@
           "lines": 112,
           "maxCyclomatic": 9,
           "entropy": 5.72
+        },
+        {
+          "commit": "bbcc325",
+          "timestamp": "2026-04-08T21:38:05.372Z",
+          "mi": 33.5,
+          "cognitive": 40,
+          "nesting": 3,
+          "lines": 209,
+          "maxCyclomatic": 12,
+          "entropy": 6.16
         }
       ],
-      "trend": "stable"
+      "trend": "regressing"
     },
     "src/services/socialAuthService.ts": {
       "latest": {
@@ -437,5 +447,5 @@
       "trend": "stable"
     }
   },
-  "capturedAt": "2026-04-08T19:27:41.451Z"
+  "capturedAt": "2026-04-08T21:38:17.408Z"
 }

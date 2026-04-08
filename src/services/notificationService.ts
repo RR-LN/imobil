@@ -3,16 +3,27 @@ import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import { supabase } from './supabase';
 
-// Configure notification behavior
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+// Web-safe notification handling
+const isWeb = Platform.OS === 'web';
+
+// Only configure handler on native platforms
+if (!isWeb) {
+  try {
+    if (Notifications && typeof Notifications.setNotificationHandler === 'function') {
+      Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+          shouldShowAlert: true,
+          shouldPlaySound: true,
+          shouldSetBadge: true,
+          shouldShowBanner: true,
+          shouldShowList: true,
+        }),
+      });
+    }
+  } catch (e) {
+    console.warn('Failed to set notification handler:', e);
+  }
+}
 
 export type NotificationType = 
   | 'booking_confirmed' 
@@ -27,48 +38,62 @@ export interface NotificationData {
 }
 
 /**
+ * Web-safe notification wrapper
+ */
+const safeNotificationCall = async <T>(
+  fn: () => Promise<T>,
+  fallback: T = null as T
+): Promise<T> => {
+  if (isWeb) {
+    console.log('Push notifications not available on web');
+    return fallback;
+  }
+  try {
+    return await fn();
+  } catch (error) {
+    console.warn('Notification error:', error);
+    return fallback;
+  }
+};
+
+/**
  * Register for push notifications
  */
 export const registerForPushNotifications = async (): Promise<string | null> => {
-  let token: string | null = null;
+  return safeNotificationCall(async () => {
+    if (!Device.isDevice) {
+      console.log('Must be on physical device for push notifications');
+      return null;
+    }
 
-  if (!Device.isDevice) {
-    console.log('Must be on physical device for push notifications');
-    return null;
-  }
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
 
-  // Check permissions
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
 
-  if (existingStatus !== 'granted') {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
-  }
+    if (finalStatus !== 'granted') {
+      console.log('Notification permissions not granted');
+      return null;
+    }
 
-  if (finalStatus !== 'granted') {
-    console.log('Notification permissions not granted');
-    return null;
-  }
-
-  // Get push token
-  try {
     const { data } = await Notifications.getExpoPushTokenAsync({
-      projectId: 'your-project-id', // Replace with actual Expo project ID
+      projectId: 'your-project-id',
     });
-    token = data;
 
     // Store token in Supabase
     const { data: userData } = await supabase.auth.getUser();
-    if (userData?.user && token) {
+    if (userData?.user && data) {
       await supabase
         .from('profiles')
-        .update({ push_token: token })
+        .update({ push_token: data })
         .eq('id', userData.user.id);
     }
 
     // Configure Android channel
-    if (Platform.OS === 'android') {
+    if (Platform.OS === 'android' && Notifications.setNotificationChannelAsync) {
       await Notifications.setNotificationChannelAsync('default', {
         name: 'default',
         importance: Notifications.AndroidImportance.MAX,
@@ -77,11 +102,8 @@ export const registerForPushNotifications = async (): Promise<string | null> => 
       });
     }
 
-    return token;
-  } catch (error) {
-    console.error('Push notification registration error:', error);
-    return null;
-  }
+    return data;
+  });
 };
 
 /**
@@ -91,9 +113,9 @@ export const scheduleLocalNotification = async (
   title: string,
   body: string,
   data: NotificationData,
-  trigger?: Notifications.NotificationTriggerInput
+  trigger?: any
 ): Promise<string | null> => {
-  try {
+  return safeNotificationCall(async () => {
     const id = await Notifications.scheduleNotificationAsync({
       content: {
         title,
@@ -102,13 +124,19 @@ export const scheduleLocalNotification = async (
         sound: 'default',
         badge: 1,
       },
-      trigger: { seconds: 1 } as any,
+      trigger: trigger || { seconds: 1 } as any,
     });
     return id;
-  } catch (error) {
-    console.error('Schedule notification error:', error);
-    return null;
-  }
+  });
+};
+
+// Legacy API for backward compatibility - used by ChatScreen.tsx and BookingScreen.tsx
+export const schedulePushNotification = async (
+  title: string,
+  body: string,
+  trigger: any = null
+): Promise<string | null> => {
+  return scheduleLocalNotification(title, body, { type: 'new_message' }, trigger);
 };
 
 /**
@@ -120,6 +148,11 @@ export const scheduleBookingReminders = async (
   visitDate: string,
   visitTime: string
 ): Promise<void> => {
+  if (isWeb) {
+    console.log('Booking reminders not available on web');
+    return;
+  }
+
   try {
     const visitDateTime = new Date(`${visitDate}T${visitTime}`);
     const now = new Date();
@@ -133,7 +166,7 @@ export const scheduleBookingReminders = async (
         'Lembrete de Visita',
         `Sua visita a ${propertyTitle} é amanhã às ${visitTime}`,
         { type: 'booking_reminder', bookingId },
-        { channelId: 'default' } as any
+        { date: reminder24h } as any
       );
     }
 
@@ -146,7 +179,7 @@ export const scheduleBookingReminders = async (
         'Visita em Breve',
         `Sua visita a ${propertyTitle} começa em 1 hora`,
         { type: 'booking_reminder', bookingId },
-        { channelId: 'default' } as any
+        { date: reminder1h } as any
       );
     }
   } catch (error) {
@@ -163,6 +196,11 @@ export const sendPushNotification = async (
   body: string,
   data: NotificationData
 ): Promise<boolean> => {
+  if (isWeb) {
+    console.log('Push notifications not available on web');
+    return false;
+  }
+
   try {
     const { data: profile } = await supabase
       .from('profiles')
@@ -172,7 +210,6 @@ export const sendPushNotification = async (
 
     if (!profile?.push_token) return false;
 
-    // Call Supabase Edge Function
     const { error } = await supabase.functions.invoke('send-push-notification', {
       body: {
         token: profile.push_token,
@@ -194,52 +231,80 @@ export const sendPushNotification = async (
  * Cancel notification
  */
 export const cancelNotification = async (notificationId: string): Promise<void> => {
-  try {
+  safeNotificationCall(async () => {
     await Notifications.cancelScheduledNotificationAsync(notificationId);
-  } catch (error) {
-    console.error('Cancel notification error:', error);
-  }
+  });
 };
 
 /**
- * Set up notification listeners
+ * Setup notification handlers - legacy API used by App.tsx
  */
-export const setupNotificationListeners = (
-  onNotificationReceived?: (notification: Notifications.Notification) => void,
-  onNotificationResponse?: (response: Notifications.NotificationResponse) => void
+export const setupNotificationHandlers = (
+  onNotificationReceived?: (notification: any) => void,
+  onNotificationResponse?: (response: any) => void
 ): { remove: () => void } => {
-  const receivedSubscription = Notifications.addNotificationReceivedListener(
-    (notification) => {
-      console.log('Notification received:', notification);
-      onNotificationReceived?.(notification);
-    }
-  );
+  if (isWeb) {
+    return { remove: () => {} };
+  }
 
-  const responseSubscription = Notifications.addNotificationResponseReceivedListener(
-    (response) => {
-      console.log('Notification response:', response);
-      onNotificationResponse?.(response);
-    }
-  );
+  try {
+    const receivedSubscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log('Notification received:', notification);
+        onNotificationReceived?.(notification);
+      }
+    );
 
-  return {
-    remove: () => {
-      receivedSubscription.remove();
-      responseSubscription.remove();
-    },
-  };
+    const responseSubscription = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log('Notification response:', response);
+        onNotificationResponse?.(response);
+      }
+    );
+
+    return {
+      remove: () => {
+        receivedSubscription.remove();
+        responseSubscription.remove();
+      },
+    };
+  } catch (error) {
+    console.warn('Failed to set up notification listeners:', error);
+    return { remove: () => {} };
+  }
 };
+
+// Modern alias
+export const setupNotificationListeners = setupNotificationHandlers;
 
 /**
  * Get badge count
  */
 export const getBadgeCount = async (): Promise<number> => {
-  return await Notifications.getBadgeCountAsync();
+  return safeNotificationCall(async () => {
+    return await Notifications.getBadgeCountAsync();
+  }, 0);
 };
 
 /**
  * Set badge count
  */
 export const setBadgeCount = async (count: number): Promise<void> => {
-  await Notifications.setBadgeCountAsync(count);
+  safeNotificationCall(async () => {
+    await Notifications.setBadgeCountAsync(count);
+  });
 };
+
+// Legacy default export for backward compatibility
+const notificationService = {
+  setupNotificationHandlers,
+  schedulePushNotification,
+  registerForPushNotifications,
+  scheduleBookingReminders,
+  sendPushNotification,
+  cancelNotification,
+  getBadgeCount,
+  setBadgeCount,
+};
+
+export default notificationService;
