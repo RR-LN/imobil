@@ -360,7 +360,57 @@
         }
       ],
       "trend": "stable"
+    },
+    "src/services/chatService.ts": {
+      "latest": {
+        "commit": "f640ece",
+        "timestamp": "2026-04-08T11:45:54.439Z",
+        "mi": 30.4,
+        "cognitive": 47,
+        "nesting": 3,
+        "lines": 297,
+        "maxCyclomatic": 5,
+        "entropy": 5.85
+      },
+      "history": [
+        {
+          "commit": "f640ece",
+          "timestamp": "2026-04-08T11:45:54.439Z",
+          "mi": 30.4,
+          "cognitive": 47,
+          "nesting": 3,
+          "lines": 297,
+          "maxCyclomatic": 5,
+          "entropy": 5.85
+        }
+      ],
+      "trend": "stable"
+    },
+    "src/components/chat/ChatInput.tsx": {
+      "latest": {
+        "commit": "f640ece",
+        "timestamp": "2026-04-08T12:14:38.843Z",
+        "mi": 19.6,
+        "cognitive": 44,
+        "nesting": 4,
+        "lines": 327,
+        "maxCyclomatic": 35,
+        "entropy": 6.47
+      },
+      "history": [
+        {
+          "commit": "f640ece",
+          "timestamp": "2026-04-08T12:14:38.843Z",
+          "mi": 19.6,
+          "cognitive": 44,
+          "nesting": 4,
+          "lines": 327,
+          "maxCyclomatic": 35,
+          "entropy": 6.47
+        }
+      ],
+      "trend": "stable"
     }
   },
-  "capturedAt": "2026-04-08T09:09:30.384Z"
+  "capturedAt": "2026-04-08T12:14:51.530Z"
 }
