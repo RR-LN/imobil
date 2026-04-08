@@ -310,7 +310,57 @@
         }
       ],
       "trend": "stable"
+    },
+    "src/services/notificationService.ts": {
+      "latest": {
+        "commit": "6f1f959",
+        "timestamp": "2026-04-08T08:20:05.606Z",
+        "mi": 38.3,
+        "cognitive": 38,
+        "nesting": 4,
+        "lines": 112,
+        "maxCyclomatic": 9,
+        "entropy": 5.72
+      },
+      "history": [
+        {
+          "commit": "6f1f959",
+          "timestamp": "2026-04-08T08:20:05.606Z",
+          "mi": 38.3,
+          "cognitive": 38,
+          "nesting": 4,
+          "lines": 112,
+          "maxCyclomatic": 9,
+          "entropy": 5.72
+        }
+      ],
+      "trend": "stable"
+    },
+    "src/services/socialAuthService.ts": {
+      "latest": {
+        "commit": "6f1f959",
+        "timestamp": "2026-04-08T09:09:21.753Z",
+        "mi": 43.3,
+        "cognitive": 46,
+        "nesting": 6,
+        "lines": 112,
+        "maxCyclomatic": 10,
+        "entropy": 4.74
+      },
+      "history": [
+        {
+          "commit": "6f1f959",
+          "timestamp": "2026-04-08T09:09:21.753Z",
+          "mi": 43.3,
+          "cognitive": 46,
+          "nesting": 6,
+          "lines": 112,
+          "maxCyclomatic": 10,
+          "entropy": 4.74
+        }
+      ],
+      "trend": "stable"
     }
   },
-  "capturedAt": "2026-04-08T07:49:52.931Z"
+  "capturedAt": "2026-04-08T09:09:30.384Z"
 }
