@@ -410,7 +410,32 @@
         }
       ],
       "trend": "stable"
+    },
+    "src/components/video/VideoPlayer.tsx": {
+      "latest": {
+        "commit": "10d3710",
+        "timestamp": "2026-04-08T19:27:32.942Z",
+        "mi": 25.7,
+        "cognitive": 32,
+        "nesting": 4,
+        "lines": 211,
+        "maxCyclomatic": 25,
+        "entropy": 6.49
+      },
+      "history": [
+        {
+          "commit": "10d3710",
+          "timestamp": "2026-04-08T19:27:32.942Z",
+          "mi": 25.7,
+          "cognitive": 32,
+          "nesting": 4,
+          "lines": 211,
+          "maxCyclomatic": 25,
+          "entropy": 6.49
+        }
+      ],
+      "trend": "stable"
     }
   },
-  "capturedAt": "2026-04-08T12:14:51.530Z"
+  "capturedAt": "2026-04-08T19:27:41.451Z"
 }

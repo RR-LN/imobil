@@ -1,0 +1,118 @@
+{
+  "stateVersion": 9,
+  "steeringHistory": [
+    {
+      "turnId": "18141269",
+      "suggestedPrompt": "Proceed, and explain the logic.",
+      "actualUserPrompt": "proceed and explain the logic",
+      "classification": "accepted_edited",
+      "similarity": 0.9833333333333334,
+      "timestamp": "2026-04-07T19:47:15.696Z"
+    },
+    {
+      "turnId": "2c851dff",
+      "suggestedPrompt": "npm run web",
+      "actualUserPrompt": "primeiro faz o push do projeto",
+      "classification": "changed_course",
+      "similarity": 0.14634146341463414,
+      "timestamp": "2026-04-07T20:04:16.838Z"
+    },
+    {
+      "turnId": "4838c8da",
+      "suggestedPrompt": "1",
+      "actualUserPrompt": "Make it \"real\" - Add real features like auth flow, booking system,  \n map integration",
+      "classification": "changed_course",
+      "similarity": 0,
+      "timestamp": "2026-04-07T20:19:09.557Z"
+    },
+    {
+      "turnId": "fb36daf0",
+      "suggestedPrompt": "continue",
+      "actualUserPrompt": "continue",
+      "classification": "accepted_exact",
+      "similarity": 1,
+      "timestamp": "2026-04-07T20:31:46.595Z"
+    },
+    {
+      "turnId": "2c93c728",
+      "suggestedPrompt": "continue",
+      "actualUserPrompt": "continue",
+      "classification": "accepted_exact",
+      "similarity": 1,
+      "timestamp": "2026-04-07T20:34:32.293Z"
+    },
+    {
+      "turnId": "8f42b11e",
+      "suggestedPrompt": "Map Integration",
+      "actualUserPrompt": "MyAppointmentsScreen",
+      "classification": "changed_course",
+      "similarity": 0.2571428571428571,
+      "timestamp": "2026-04-07T22:26:11.463Z"
+    },
+    {
+      "turnId": "f2e2b566",
+      "suggestedPrompt": "continue",
+      "actualUserPrompt": "continue",
+      "classification": "accepted_exact",
+      "similarity": 1,
+      "timestamp": "2026-04-07T22:42:54.936Z"
+    },
+    {
+      "turnId": "e7884c8e",
+      "suggestedPrompt": "continue",
+      "actualUserPrompt": "yes",
+      "classification": "changed_course",
+      "similarity": 0.09090909090909091,
+      "timestamp": "2026-04-07T22:58:53.408Z"
+    },
+    {
+      "turnId": "e976d431",
+      "suggestedPrompt": "Push Notifications",
+      "actualUserPrompt": "chat",
+      "classification": "changed_course",
+      "similarity": 0.13636363636363635,
+      "timestamp": "2026-04-08T07:32:05.958Z"
+    },
+    {
+      "turnId": "59954d81",
+      "suggestedPrompt": "start\n\n with the authentication flow",
+      "actualUserPrompt": "start with the autentication flow",
+      "classification": "accepted_edited",
+      "similarity": 0.8258706467661692,
+      "timestamp": "2026-04-08T09:02:45.831Z"
+    },
+    {
+      "turnId": "90a5e521",
+      "suggestedPrompt": "yes",
+      "actualUserPrompt": "yes do both begining with property detail redesign",
+      "classification": "changed_course",
+      "similarity": 0.11910377358490566,
+      "timestamp": "2026-04-08T10:07:13.845Z"
+    },
+    {
+      "turnId": "4aa33d46",
+      "suggestedPrompt": "Property detail redesign first",
+      "actualUserPrompt": "yes do it image upload in chat",
+      "classification": "changed_course",
+      "similarity": 0.18333333333333332,
+      "timestamp": "2026-04-08T11:30:28.658Z"
+    },
+    {
+      "turnId": "6cbc417a",
+      "suggestedPrompt": "Real estate app with\n\n video tours and immersive property UI",
+      "actualUserPrompt": "https://youtu.be/_iENSAKA63k?si=u0L9RVv7Q8oukIsN   try again otherwise tell me why don't you get to be able and how would i do to help on this or i uninstall the pi-omni extension to install the pi-web-acess because both can't be woriking together as  when i instaled both i ran into problems and at the time i uninstaled pi-web-acess cause i thought omni has better capabilities on web acessing and fetching and so on",
+      "classification": "changed_course",
+      "similarity": 0.10482734319943623,
+      "timestamp": "2026-04-08T12:45:00.918Z"
+    },
+    {
+      "turnId": "a5350d33",
+      "suggestedPrompt": "Property browsing app with image galleries and video\n\n tours. Proceed with the property detail redesign first.",
+      "actualUserPrompt": "the problem is that i wanted to use both omni and pi-web-acess but  they cant work together because of the part of searching the web which omni and pi-web-acess both do if there was a way for me to use both but pi-web-acess specifically to web search it would be good",
+      "classification": "changed_course",
+      "similarity": 0.18310160427807487,
+      "timestamp": "2026-04-08T13:09:25.201Z"
+    }
+  ],
+  "turnsSinceLastStalenessCheck": 4
+}
